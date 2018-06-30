@@ -1,0 +1,14 @@
+version: '3'
+services:
+    data-labeler:
+        image: adamkowalski/python
+        volumes:
+            - ./data/:/data/
+            - ./data-labeler/:/data-labeler/
+            - ./.emacs.d/:/root/.emacs.d/
+        stdin_open: true
+        tty: true
+        working_dir: /data-labeler
+        environment:
+            - TERM=xterm-256color
+        command: bash
