@@ -6,6 +6,8 @@ services:
             - ./data/:/data/
             - ./data-labeler/:/data-labeler/
             - ./.emacs.d/:/root/.emacs.d/
+        stdin_open: true
+        tty: true
         working_dir: /data-labeler
         runtime: nvidia
-        command: python data-labeler.py
+        command: bash

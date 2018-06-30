@@ -167,13 +167,15 @@
   (add-hook 'emacs-lisp-mode-hook #'evil-smartparens-mode)
   :diminish evil-smartparens-mode)
 
-(use-package magit :defer t
+(use-package magit
+  :defer t
   :init
   (add-hook 'magit #'evil-magit-init)
   (add-hook 'magit #'evil-mode)
   (add-hook 'magit #'turn-on-evil-mode))
 
-(use-package evil-magit :defer t
+(use-package evil-magit
+  :defer t
   :init (setq evil-magit-state 'normal))
 
 (general-define-key
@@ -182,10 +184,14 @@
  "TAB" 'lisp-indent-adjust-parens
  "<backtab>" 'lisp-dedent-adjust-parens)
 
+(use-package elpy
+  :defer t
+  :init (elpy-enable))
 
-(provide 'init)
-;;; init.el ends here
-
+(general-define-key
+ :states '(normal visual)
+ :keymaps 'python-mode-map
+ "e" 'elpy-shell-send-group)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -194,10 +200,16 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (evil-magit evil-smartparens aggressive-indent adjust-parens evil-cleverparens rainbow-delimiters company general which-key counsel-projectile counsel ivy zerodark-theme linum-relative diminish evil use-package))))
+    (elpy evil-magit evil-smartparens aggressive-indent adjust-parens evil-cleverparens rainbow-delimiters company general which-key counsel-projectile counsel ivy zerodark-theme linum-relative diminish evil use-package))))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+(provide 'init)
+;;; init.el ends here
+
+
