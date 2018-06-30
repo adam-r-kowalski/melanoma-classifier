@@ -6,8 +6,6 @@ services:
             - ./data/:/data/
             - ./data-partitioner/:/data-partitioner/
             - ./.emacs.d/:/root/.emacs.d/
-        stdin_open: true
-        tty: true
         working_dir: /data-partitioner
         runtime: nvidia
-        command: bash
+        command: python data-partitioner.py
