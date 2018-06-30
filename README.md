@@ -40,7 +40,7 @@ cd melanoma-classifier
 ### Install Docker
 
 In order to ensure no environmental differences between developers, docker is used.
-Follow the [installation instructions](`https://docs.docker.com/install/`) for your platform.
+Follow the [installation instructions](https://docs.docker.com/install/) for your platform.
 
 Because we want to take advantage of the GPU to make training much faster, we need to also
 install [nvidia-docker](https://github.com/NVIDIA/nvidia-docker).
