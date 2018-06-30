@@ -51,3 +51,10 @@ This service will download the dataset from [The International Skin Imaging Coll
 who generously provide thousands of examples of various skin related diseases.
 
 `docker-compose -f docker-compose.data-downloader.yml up`
+
+### Label the data
+
+This dataset will take our data and create an efficient binary representation which contains both
+the images as well as the labels.
+
+`docker-compose -f docker-compose.data-labeler.yml up`
