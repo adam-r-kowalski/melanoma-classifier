@@ -1,0 +1,8 @@
+version: '3'
+services:
+    data-downloader:
+        image: adamkowalski/python
+        volumes:
+            - ./data/:/data/
+            - ./data-downloader/:/data-downloader/
+        command: bash /data-downloader/data-downloader.sh
