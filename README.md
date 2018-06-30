@@ -54,7 +54,14 @@ who generously provide thousands of examples of various skin related diseases.
 
 ### Label the data
 
-This dataset will take our data and create an efficient binary representation which contains both
+This service will take our data and create an efficient binary representation which contains both
 the images as well as the labels.
 
 `docker-compose -f docker-compose.data-labeler.yml up`
+
+## Partition the data
+
+This service will take our dataset and partition it into batches of 1000 as well as ensure that we have
+an even distribution of melanoma to non melanoma images
+
+`docker-compose -f docker-compose.data-partitioner.yml up`
