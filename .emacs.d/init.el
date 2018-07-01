@@ -71,7 +71,6 @@
  :states 'normal
  :keymaps '(global dired-mode-map)
  :prefix "SPC"
- "g" 'magit
  "f" 'counsel-find-file
  "F" 'counsel-projectile
  "r" 'counsel-recentf
@@ -119,7 +118,7 @@
   :init
   (global-company-mode)
   (setq company-idle-delay 0
-	company-minimum-prefix 2
+	company-minimum-prefix 0
 	company-tooltip-limit 20)
   :diminish company-mode)
 
@@ -167,17 +166,6 @@
   (add-hook 'emacs-lisp-mode-hook #'evil-smartparens-mode)
   :diminish evil-smartparens-mode)
 
-(use-package magit
-  :defer t
-  :init
-  (add-hook 'magit #'evil-magit-init)
-  (add-hook 'magit #'evil-mode)
-  (add-hook 'magit #'turn-on-evil-mode))
-
-(use-package evil-magit
-  :defer t
-  :init (setq evil-magit-state 'normal))
-
 (general-define-key
  :states '(normal insert)
  :keymaps 'emacs-lisp-mode-map
@@ -193,14 +181,25 @@
  :keymaps 'python-mode-map
  "e" 'elpy-shell-send-group)
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (elpy evil-magit evil-smartparens aggressive-indent adjust-parens evil-cleverparens rainbow-delimiters company general which-key counsel-projectile counsel ivy zerodark-theme linum-relative diminish evil use-package))))
+(defun before-save-typescript-hook ()
+  "This hook will run before saving a typescript file."
+  (when (eq major-mode 'typescript-mode)
+    (tide-format-before-save)))
+
+(use-package tide
+  :defer t
+  :init
+  (tide-setup)
+  (tide-hl-identifier-mode 1)
+  (add-hook 'before-save-hook #'before-save-typescript-hook)
+  (add-hook 'typescript-mode-hook #'tide-mode))
+
+;; If you edit it by hand, you could mess it up, so be careful.
+;; Your init file should contain only one such instance.
+;; If there is more than one, they won't work right.
+'(package-selected-packages
+  (quote
+   (elpy aggressive-indent adjust-parens evil-cleverparens rainbow-delimiters company general which-key counsel-projectile counsel ivy zerodark-theme linum-relative diminish evil use-package)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

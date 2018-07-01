@@ -1,0 +1,11 @@
+version: '2.3'
+services:
+    data-labeler:
+        image: adamkowalski/typescript
+        volumes:
+            - ./webapp/frontend/:/frontend/
+            - ./.emacs.d/:/root/.emacs.d/
+        stdin_open: true
+        tty: true
+        working_dir: /frontend
+        command: bash
