@@ -156,8 +156,8 @@
   (add-hook 'prog-mode-hook #'smartparens-mode)
   (add-hook 'smartparens-mode-hook
 	    #'(lambda ()
-		(sp-pair "'" nil :actions :rem)
-		(sp-pair "`" nil :actions :rem)))
+		(sp-local-pair 'emacs-lisp-mode "`" nil :actions nil)
+		(sp-local-pair 'emacs-lisp-mode "'" nil :actions nil)))
   :diminish smartparens-mode)
 
 (use-package evil-smartparens
@@ -194,6 +194,17 @@
   (add-hook 'before-save-hook #'before-save-typescript-hook)
   (add-hook 'typescript-mode-hook #'tide-mode))
 
+(use-package web-mode
+  :defer t
+  :init
+  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
+  (add-hook 'web-mode-hook
+	    (lambda ()
+	      (when (string-equal "tsx" (file-name-extension buffer-file-name))
+		(tide-mode))))
+  (flycheck-add-mode 'typescript-tslint 'web-mode))
+
 ;; If you edit it by hand, you could mess it up, so be careful.
 ;; Your init file should contain only one such instance.
 ;; If there is more than one, they won't work right.
@@ -212,3 +223,11 @@
 ;;; init.el ends here
 
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (web-mode zerodark-theme which-key use-package tide rainbow-delimiters linum-relative general evil-smartparens evil-cleverparens elpy diminish counsel-projectile aggressive-indent adjust-parens))))

@@ -1,22 +1,21 @@
-
 import * as webpack from 'webpack';
-import * as HtmlWebpackPlugin from 'html-webpack-plugin'
-import * as HtmlWebpackTemplate from 'html-webpack-template'
+import * as HtmlWebpackPlugin from 'html-webpack-plugin';
 
 const config: webpack.Configuration = {
-    mode: 'development',
+    mode: "development",
 
-    entry: 'src/index.ts',
+    entry: "./src/index.tsx",
 
     output: {
-        filename: 'bundle.js',
+        filename: "bundle.js",
         path: `${__dirname}/dist`
     },
 
-    devtool: 'source-map',
+    devtool: "source-map",
 
     devServer: {
         contentBase: `${__dirname}/dist`,
+        host: "0.0.0.0",
         port: 8888,
         overlay: {
             warnings: true,
@@ -25,27 +24,19 @@ const config: webpack.Configuration = {
     },
 
     resolve: {
-        extensions: ['.ts', '.tsx', '.js', '.json']
+        extensions: [".ts", ".tsx", ".js", ".json"]
     },
 
     module: {
         rules: [
-            { test: /\.tsx?$/, loader: 'awesome-typescript-loader' },
-            { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' }
+            { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
+            { test: /\.js$/, exclude: /node_modules/, loader: "source-map-loader" }
         ]
     },
 
     plugins: [
         new HtmlWebpackPlugin({
-            inject: false,
-            template: HtmlWebpackTemplate,
-            appMountId: 'app',
-            mobile: true,
-            lang: 'en-US',
-            links: [
-                'https://fonts.googleapis.com/css?family=Roboto'
-            ],
-            title: 'Melanoma Classifier'
+            title: "Melanoma Classifier"
         })
     ]
 }
