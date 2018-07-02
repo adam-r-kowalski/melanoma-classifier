@@ -65,3 +65,9 @@ This service will take our dataset and partition it into batches of 1000 as well
 an even distribution of melanoma to non melanoma images
 
 `docker-compose -f docker-compose.data-partitioner.yml up`
+
+## Launch the webapp
+
+This service will allow you to construct and train models
+
+`docker-compose -f docker-compose.webapp.yml up`
