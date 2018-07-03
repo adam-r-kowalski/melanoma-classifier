@@ -3,9 +3,10 @@ from aiohttp import web
 routes = web.RouteTableDef()
 
 
-@routes.get('/')
+@routes.post('/')
 async def root(request):
-    return web.Response(text='I will save your model!')
+    print(request)
+    return web.json_response({'some': 'data'})
 
 
 app = web.Application()

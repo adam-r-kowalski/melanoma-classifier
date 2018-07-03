@@ -58,7 +58,9 @@
   :diminish ivy-mode)
 
 (use-package counsel :defer t)
-(use-package counsel-projectile :defer t)
+
+(use-package counsel-projectile
+  :defer t)
 
 (use-package which-key
   :defer t
@@ -181,21 +183,11 @@
  :keymaps 'python-mode-map
  "e" 'elpy-shell-send-group)
 
-(defun before-save-typescript-hook ()
-  "This hook will run before saving a typescript file."
-  (when (eq major-mode 'typescript-mode)
-    (tide-format-before-save)))
-
-(defun typescript-mode-hook ()
-  (tide-setup)
-  (tide-hl-identifier-mode 1)
-  (tide-mode))
-
 (use-package tide
   :defer t
-  :init
-  (add-hook 'before-save-hook #'before-save-typescript-hook)
-  (add-hook 'typescript-mode-hook #'typescript-mode-hook))
+  :hook ((typescript-mode . tide-setup)
+	 (typescript-mode . tide-hl-identifier-mode)
+	 (before-save . tide-format-before-save)))
 
 (use-package web-mode
   :defer t
@@ -206,7 +198,10 @@
 	    (lambda ()
 	      (when (string-equal "tsx" (file-name-extension buffer-file-name))
 		(tide-mode))))
-  (flycheck-add-mode 'typescript-tslint 'web-mode))
+  (flycheck-add-mode 'typescript-tslint 'web-mode)
+  (setq web-mode-code-indent-offset 2
+	typescript-indent-level 2))
+
 
 ;; If you edit it by hand, you could mess it up, so be careful.
 ;; Your init file should contain only one such instance.
