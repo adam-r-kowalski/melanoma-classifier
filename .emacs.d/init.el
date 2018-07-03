@@ -186,13 +186,16 @@
   (when (eq major-mode 'typescript-mode)
     (tide-format-before-save)))
 
+(defun typescript-mode-hook ()
+  (tide-setup)
+  (tide-hl-identifier-mode 1)
+  (tide-mode))
+
 (use-package tide
   :defer t
   :init
-  (tide-setup)
-  (tide-hl-identifier-mode 1)
   (add-hook 'before-save-hook #'before-save-typescript-hook)
-  (add-hook 'typescript-mode-hook #'tide-mode))
+  (add-hook 'typescript-mode-hook #'typescript-mode-hook))
 
 (use-package web-mode
   :defer t

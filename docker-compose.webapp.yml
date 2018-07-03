@@ -1,6 +1,6 @@
 version: '2.3'
 services:
-    data-labeler:
+    frontend:
         image: adamkowalski/typescript
         volumes:
             - ./webapp/frontend/:/frontend/
@@ -10,4 +10,22 @@ services:
         working_dir: /frontend
         ports:
             - "8888:8888"
+        networks:
+            - webapp
         command: bash
+
+    model-saver:
+        image: adamkowalski/python
+        volumes:
+            - ./webapp/model-saver/:/model-saver/
+            - ./.emacs.d/:/root/.emacs.d/
+        stdin_open: true
+        tty: true
+        working_dir: /model-saver
+        networks:
+            - webapp
+        command: bash
+
+networks:
+    webapp:
+

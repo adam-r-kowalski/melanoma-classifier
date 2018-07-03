@@ -20,6 +20,12 @@ const config: webpack.Configuration = {
         overlay: {
             warnings: true,
             errors: true
+        },
+        proxy: {
+            "/model-saver": {
+                target: "http://model-saver:8080/",
+                pathRewrite: { "^/model-saver": "" }
+            }
         }
     },
 

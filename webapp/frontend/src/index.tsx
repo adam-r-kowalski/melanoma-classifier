@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import * as tf from '@tensorflow/tfjs';
 
 document.body.style.margin = '0';
 
@@ -18,4 +17,10 @@ class App extends React.Component {
 ReactDOM.render(<App />, renderTarget);
 document.body.appendChild(renderTarget);
 
-tf.tensor([1, 2, 3]).print();
+async function fetchAsync(url: string) {
+    const response = await fetch(url);
+    const data = await response.text();
+    return data;
+}
+
+fetchAsync('/model-saver').then(console.log);
