@@ -33,7 +33,7 @@ const expandable = (props: IProps): JSX.Element =>
       <Typography>{props.layer.name}</Typography>
     </ExpansionPanelSummary>
     <ExpansionPanelDetails>
-      <Fields fields={props.layer.fields} />
+      <Fields fields={props.layer.fields} layerIndex={props.index} />
     </ExpansionPanelDetails>
   </ExpansionPanel>;
 

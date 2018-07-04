@@ -2,6 +2,7 @@
     "extends": ["tslint:latest", "tslint-config-airbnb"],
     "rules": {
 	"no-submodule-imports": false,
-	"variable-name": false
+	"variable-name": false,
+	"max-classes-per-file": false
     }
 }

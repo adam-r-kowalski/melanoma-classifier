@@ -7,10 +7,10 @@ import { ILayer } from '../model';
 import { grid, Layer } from './Layer';
 
 const getListStyle = (isDraggingOver: boolean): React.CSSProperties => ({
-  background: isDraggingOver ? 'lightblue' : 'lightgrey',
+  background: isDraggingOver ? 'lightblue' : 'none',
+  margin: '0 auto',
   padding: grid,
   width: 500,
-  margin: '0 auto',
 });
 
 const onDragEnd = (dispatch: Dispatch) =>

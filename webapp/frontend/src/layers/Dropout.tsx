@@ -1,8 +1,14 @@
 import * as React from 'react';
 
-import { ILayer } from '../model';
+import { IField, ILayer } from '../model';
 
 export default class Dropout implements ILayer {
   public readonly name = 'Dropout';
-  public rate: number = 0.3;
+
+  public fields: IField[] = [
+    {
+      name: 'rate',
+      value: 0.3,
+    },
+  ];
 }

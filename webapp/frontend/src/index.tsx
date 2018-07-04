@@ -1,6 +1,6 @@
+import { MuiThemeProvider } from '@material-ui/core/styles';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { MuiThemeProvider } from '@material-ui/core/styles';
 
 import AppBar from './components/AppBar';
 import { Layers } from './components/Layers';
@@ -9,6 +9,7 @@ import { IEvent } from './event';
 import { empty, IState } from './state';
 
 document.body.style.margin = '0';
+document.body.style.overflow = 'hidden';
 
 class App extends React.Component<{}, IState> {
   constructor(props: {}) {
@@ -18,7 +19,6 @@ class App extends React.Component<{}, IState> {
 
   public render(): JSX.Element {
     const currentContext = { state: this.state, dispatch: this.dispatch };
-    console.log(JSON.stringify(this.state.model));
     return (
       <context.Provider value={currentContext}>
         <MuiThemeProvider theme={this.state.theme}>
