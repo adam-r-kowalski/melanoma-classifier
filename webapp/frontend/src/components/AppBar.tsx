@@ -5,7 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
 export default () =>
-  <AppBar position="static" color="default">
+  <AppBar position="static">
     <Toolbar>
       <Typography variant="title" color="inherit">
         Melanoma Classifier

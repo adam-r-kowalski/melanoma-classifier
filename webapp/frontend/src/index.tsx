@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 
 import AppBar from './components/AppBar';
 import { Layers } from './components/Layers';
@@ -17,10 +18,13 @@ class App extends React.Component<{}, IState> {
 
   public render(): JSX.Element {
     const currentContext = { state: this.state, dispatch: this.dispatch };
+    console.log(JSON.stringify(this.state.model));
     return (
       <context.Provider value={currentContext}>
-        <AppBar />
-        <Layers />
+        <MuiThemeProvider theme={this.state.theme}>
+          <AppBar />
+          <Layers />
+        </MuiThemeProvider>
       </context.Provider>
     );
   }

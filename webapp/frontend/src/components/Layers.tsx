@@ -3,13 +3,14 @@ import * as D from 'react-beautiful-dnd';
 
 import { context, Dispatch, IContext } from '../context';
 import { DragEndEvent } from '../event';
-import { ILayer } from '../state';
+import { ILayer } from '../model';
 import { grid, Layer } from './Layer';
 
 const getListStyle = (isDraggingOver: boolean): React.CSSProperties => ({
   background: isDraggingOver ? 'lightblue' : 'lightgrey',
   padding: grid,
-  width: 250,
+  width: 500,
+  margin: '0 auto',
 });
 
 const onDragEnd = (dispatch: Dispatch) =>
