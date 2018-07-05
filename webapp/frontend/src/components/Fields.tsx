@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import * as React from 'react';
 
 import { context } from '../context';
-import { UpdateField } from '../event';
+import UpdateFieldEvent from '../events/UpdateFieldEvent';
 import { IField, INestedField } from '../model';
 
 interface INestedProps {
@@ -24,7 +24,7 @@ const Nested = (props: INestedProps): JSX.Element =>
         type="number"
         onMouseDown={e => e.stopPropagation()}
         onKeyDown={e => e.stopPropagation()}
-        onChange={e => dispatch(new UpdateField({
+        onChange={e => dispatch(new UpdateFieldEvent({
           field: props.field.name,
           group: props.group,
           layerIndex: props.layerIndex,
@@ -59,7 +59,7 @@ const Single = (props: IFieldProps): JSX.Element =>
         type="number"
         onMouseDown={e => e.stopPropagation()}
         onKeyDown={e => e.stopPropagation()}
-        onChange={e => dispatch(new UpdateField({
+        onChange={e => dispatch(new UpdateFieldEvent({
           field: props.field.name,
           layerIndex: props.layerIndex,
           value: e.target.value,

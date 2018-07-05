@@ -1,3 +1,4 @@
+import Button from '@material-ui/core/Button';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -6,6 +7,8 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import * as React from 'react';
 import * as D from 'react-beautiful-dnd';
 
+import { context, Dispatch } from '../context';
+import DeleteLayerEvent from '../events/DeleteLayerEvent';
 import { ILayer } from '../model';
 import { Fields } from './Fields';
 
@@ -22,27 +25,37 @@ const getItemStyle = (isDragging: boolean, draggableStyle: DraggableStyle): CSS 
   ...draggableStyle,
 });
 
+const onClick = (dispatch: Dispatch, index: number) =>
+  (event: React.MouseEvent<HTMLElement>): void => {
+    dispatch(new DeleteLayerEvent(index));
+    event.stopPropagation();
+  };
+
 interface IProps {
   layer: ILayer;
   index: number;
 }
 
-const expandable = (props: IProps): JSX.Element =>
-  <ExpansionPanel>
-    <ExpansionPanelSummary expandIcon={<ExpandMore />}>
-      <Typography>{props.layer.name}</Typography>
-    </ExpansionPanelSummary>
-    <ExpansionPanelDetails>
-      <Fields fields={props.layer.fields} layerIndex={props.index} />
-    </ExpansionPanelDetails>
-  </ExpansionPanel>;
-
-const fixed = (props: IProps): JSX.Element =>
-  <ExpansionPanel expanded={false}>
-    <ExpansionPanelSummary>
-      <Typography>{props.layer.name}</Typography>
-    </ExpansionPanelSummary>
-  </ExpansionPanel>;
+const Panel = (props: IProps): JSX.Element =>
+  <context.Consumer>
+    {({ dispatch }) =>
+      <ExpansionPanel>
+        <ExpansionPanelSummary expandIcon={<ExpandMore />}>
+          <Typography>{props.layer.name}</Typography>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+            {props.layer.fields ?
+              <Fields fields={props.layer.fields} layerIndex={props.index} /> :
+              <></>}
+            <Button color="secondary" onClick={onClick(dispatch, props.index)}>
+              Delete
+	    </Button>
+          </div>
+        </ExpansionPanelDetails>
+      </ExpansionPanel >
+    }
+  </context.Consumer>;
 
 export const Layer = (props: IProps): JSX.Element =>
   <D.Draggable draggableId={props.layer.name} index={props.index}>
@@ -53,7 +66,7 @@ export const Layer = (props: IProps): JSX.Element =>
         {...provided.dragHandleProps}
         style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
       >
-        {props.layer.fields ? expandable(props) : fixed(props)}
+        <Panel {...props} />
       </div>
     }
   </D.Draggable>;

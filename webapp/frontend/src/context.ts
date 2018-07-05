@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { IEvent } from './event';
+import { IEvent } from './events';
 import { empty, IState } from './state';
 
 export type Dispatch = (event: IEvent) => void;

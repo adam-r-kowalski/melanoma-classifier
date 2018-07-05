@@ -1,12 +1,12 @@
 import blue from '@material-ui/core/colors/blue';
 import { createMuiTheme, Theme } from '@material-ui/core/styles';
 
+import BatchNormalization from './layers/BatchNormalization';
 import Convolution2D from './layers/Convolution2D';
+import Dense from './layers/Dense';
 import Dropout from './layers/Dropout';
 import Flatten from './layers/Flatten';
 import RectifiedLinearUnit from './layers/RectifiedLinearUnit';
-import BatchNormalization from './layers/BatchNormalization';
-import Dense from './layers/Dense';
 import { IModel } from './model';
 
 export interface IState {
@@ -24,6 +24,7 @@ export const empty: IState = {
       new Flatten(),
       new Dense(),
     ],
+    name: 'Single Convolution',
   },
   theme: createMuiTheme({
     palette: {

@@ -3,9 +3,9 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 import AppBar from './components/AppBar';
-import { Layers } from './components/Layers';
+import { Model } from './components/Model';
 import { context } from './context';
-import { IEvent } from './event';
+import { IEvent } from './events';
 import { empty, IState } from './state';
 
 document.body.style.margin = '0';
@@ -23,7 +23,7 @@ class App extends React.Component<{}, IState> {
       <context.Provider value={currentContext}>
         <MuiThemeProvider theme={this.state.theme}>
           <AppBar />
-          <Layers />
+          <Model />
         </MuiThemeProvider>
       </context.Provider>
     );

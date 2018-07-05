@@ -16,4 +16,5 @@ export interface ILayer {
 
 export interface IModel {
   layers: ILayer[];
+  name: string;
 }
