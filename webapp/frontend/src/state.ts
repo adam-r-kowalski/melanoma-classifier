@@ -13,6 +13,7 @@ export interface IState {
   drawer: boolean;
   model: string;
   models: { [name: string]: IModel };
+  tab: number;
   theme: Theme;
 }
 
@@ -45,6 +46,7 @@ export const empty: IState = {
       ],
     },
   },
+  tab: 0,
   theme: createMuiTheme({
     palette: {
       primary: blue,
