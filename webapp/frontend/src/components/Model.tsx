@@ -5,6 +5,7 @@ import * as React from 'react';
 import { context, Dispatch } from '../context';
 import ChangeTabEvent from '../events/ChangeTabEvent';
 import { Layers } from './Layers';
+import { NewLayer } from './NewLayer';
 
 const onChange = (dispatch: Dispatch) =>
   (event: React.ChangeEvent<{}>, value: number) =>
@@ -19,6 +20,7 @@ export const Model = (): JSX.Element =>
           <Tab label="Training" />
           <Tab label="Prediction" />
         </Tabs>
+        <NewLayer />
         <Layers />
       </>
     }
