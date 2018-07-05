@@ -3,7 +3,7 @@ import * as D from 'react-beautiful-dnd';
 
 import { context, Dispatch, IContext } from '../context';
 import DragEndEvent from '../events/DragEndEvent';
-import { ILayer } from '../model';
+import { ILayer, IModel } from '../model';
 import { grid, Layer } from './Layer';
 
 const getListStyle = (isDraggingOver: boolean): React.CSSProperties => ({
@@ -28,14 +28,14 @@ export const Layers = (): JSX.Element =>
   <context.Consumer>
     {({ state, dispatch }: IContext) =>
       <D.DragDropContext onDragEnd={onDragEnd(dispatch)}>
-        <D.Droppable droppableId="droppable">
+        <D.Droppable droppableId={`droppable ${state.model}`}>
           {(provided: D.DroppableProvided, snapshot: D.DroppableStateSnapshot) => (
             <div
               ref={provided.innerRef}
               style={getListStyle(snapshot.isDraggingOver)}
             >
-              {state.model.layers.map((layer: ILayer, index: number) =>
-                <Layer key={layer.name} layer={layer} index={index} />)}
+              {state.models[state.model].layers.map((layer: ILayer, index: number) =>
+                <Layer key={layer.id} layer={layer} index={index} model={state.model} />)}
               {provided.placeholder}
             </div>
           )}

@@ -12,7 +12,7 @@ export default class UpdateFieldEvent implements IEvent {
   constructor(private props: IProps) { }
 
   public update(state: IState): IState {
-    const layer = state.model.layers[this.props.layerIndex];
+    const layer = state.models[state.model].layers[this.props.layerIndex];
 
     const group = this.props.group;
     const name = group || this.props.field;

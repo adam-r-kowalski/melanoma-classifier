@@ -10,21 +10,40 @@ import RectifiedLinearUnit from './layers/RectifiedLinearUnit';
 import { IModel } from './model';
 
 export interface IState {
-  model: IModel;
+  drawer: boolean;
+  model: string;
+  models: { [name: string]: IModel };
   theme: Theme;
 }
 
 export const empty: IState = {
-  model: {
-    layers: [
-      new Convolution2D(),
-      new Dropout(),
-      new RectifiedLinearUnit(),
-      new BatchNormalization(),
-      new Flatten(),
-      new Dense(),
-    ],
-    name: 'Single Convolution',
+  drawer: false,
+  model: 'Convolution',
+  models: {
+    Convolution: {
+      layers: [
+        new Convolution2D(),
+        new Dropout(),
+        new RectifiedLinearUnit(),
+        new BatchNormalization(),
+        new Flatten(),
+        new Dense(),
+      ],
+    },
+    Dense: {
+      layers: [
+        new Flatten(),
+        new Dense(),
+        new Dropout(),
+        new RectifiedLinearUnit(),
+        new BatchNormalization(),
+        new Dense(),
+        new Dropout(),
+        new RectifiedLinearUnit(),
+        new BatchNormalization(),
+        new Dense(),
+      ],
+    },
   },
   theme: createMuiTheme({
     palette: {

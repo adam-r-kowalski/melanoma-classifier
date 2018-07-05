@@ -11,10 +11,10 @@ export interface IField {
 
 export interface ILayer {
   name: string;
+  id: string;
   fields?: IField[];
 }
 
 export interface IModel {
   layers: ILayer[];
-  name: string;
 }

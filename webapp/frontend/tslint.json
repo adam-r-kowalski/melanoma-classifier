@@ -3,6 +3,7 @@
     "rules": {
 	"no-submodule-imports": false,
 	"variable-name": false,
-	"max-classes-per-file": false
+	"max-classes-per-file": false,
+	"no-increment-decrement": false
     }
 }

@@ -34,6 +34,7 @@ const onClick = (dispatch: Dispatch, index: number) =>
 interface IProps {
   layer: ILayer;
   index: number;
+  model: string;
 }
 
 const Panel = (props: IProps): JSX.Element =>
@@ -58,7 +59,7 @@ const Panel = (props: IProps): JSX.Element =>
   </context.Consumer>;
 
 export const Layer = (props: IProps): JSX.Element =>
-  <D.Draggable draggableId={props.layer.name} index={props.index}>
+  <D.Draggable draggableId={`${props.model} ${props.layer.id}`} index={props.index}>
     {(provided: D.DraggableProvided, snapshot: D.DraggableStateSnapshot) =>
       <div
         ref={provided.innerRef}

@@ -1,13 +1,12 @@
-import Divider from '@material-ui/core/Divider';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import TextField from '@material-ui/core/TextField';
-import * as React from 'react';
-
+import counter from '../counter';
 import { IField, ILayer } from '../model';
 
+const name = 'Convolution 2D';
+const nextId = counter(name);
+
 export default class Convolution2D implements ILayer {
-  public readonly name = 'Convolution 2D';
+  public readonly name = name;
+  public readonly id: string;
 
   public fields: IField[] = [
     {
@@ -41,4 +40,8 @@ export default class Convolution2D implements ILayer {
       name: 'strides',
     },
   ];
+
+  constructor() {
+    this.id = nextId();
+  }
 }

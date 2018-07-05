@@ -1,9 +1,12 @@
-import * as React from 'react';
-
+import counter from '../counter';
 import { IField, ILayer } from '../model';
 
+const name = 'Dense';
+const nextId = counter(name);
+
 export default class Dense implements ILayer {
-  public readonly name = 'Dense';
+  public readonly name = name;
+  public readonly id: string;
   public units: number = 1;
 
   public fields: IField[] = [
@@ -12,4 +15,8 @@ export default class Dense implements ILayer {
       value: 1,
     },
   ];
+
+  constructor() {
+    this.id = nextId();
+  }
 }
