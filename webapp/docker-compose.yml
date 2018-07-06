@@ -3,8 +3,8 @@ services:
     frontend:
         image: adamkowalski/typescript
         volumes:
-            - ./webapp/frontend/:/frontend/
-            - ./.emacs.d/:/root/.emacs.d/
+            - ./frontend/:/frontend/
+            - ../.emacs.d/:/root/.emacs.d/
         stdin_open: true
         tty: true
         working_dir: /frontend
@@ -17,8 +17,8 @@ services:
     model-saver:
         image: adamkowalski/python
         volumes:
-            - ./webapp/model-saver/:/model-saver/
-            - ./.emacs.d/:/root/.emacs.d/
+            - ./model-saver/:/model-saver/
+            - ../.emacs.d/:/root/.emacs.d/
         stdin_open: true
         tty: true
         working_dir: /model-saver

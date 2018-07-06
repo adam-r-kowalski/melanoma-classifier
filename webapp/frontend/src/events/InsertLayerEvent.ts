@@ -1,6 +1,6 @@
+import layersList from '../layers/layersList';
 import { IState } from '../state';
 import { IEvent } from './';
-import layersList from '../layers/layersList';
 
 export default class InsertLayerEvent implements IEvent {
   constructor(private layer: string) { }

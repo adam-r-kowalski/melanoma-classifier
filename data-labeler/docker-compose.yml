@@ -3,9 +3,9 @@ services:
     data-labeler:
         image: adamkowalski/python
         volumes:
-            - ./data/:/data/
-            - ./data-labeler/:/data-labeler/
-            - ./.emacs.d/:/root/.emacs.d/
+            - ../data/:/data/
+            - ./:/data-labeler/
+            - ../.emacs.d/:/root/.emacs.d/
         working_dir: /data-labeler
         runtime: nvidia
         command: python data-labeler.py

@@ -11,6 +11,34 @@ const onChange = (dispatch: Dispatch) =>
   (event: React.ChangeEvent<{}>, value: number) =>
     dispatch(new ChangeTabEvent(value));
 
+const LayersRoute = (): JSX.Element =>
+  <>
+    <NewLayer />
+    <Layers />
+  </>;
+
+const TrainingRoute = (): JSX.Element =>
+  <div>Not implemented yet</div>;
+
+const PredictionRoute = (): JSX.Element =>
+  <div>Not implemented yet</div>;
+
+const SettingsRoute = (): JSX.Element =>
+  <div>Not implemented yet</div>;
+
+interface IRouterProps {
+  tab: number;
+}
+
+const Router = (props: IRouterProps): JSX.Element => {
+  switch (props.tab) {
+    case 0: return <LayersRoute />;
+    case 1: return <TrainingRoute />;
+    case 2: return <PredictionRoute />;
+    case 3: return <SettingsRoute />;
+  }
+};
+
 export const Model = (): JSX.Element =>
   <context.Consumer>
     {({ state, dispatch }) =>
@@ -19,9 +47,9 @@ export const Model = (): JSX.Element =>
           <Tab label="Layers" />
           <Tab label="Training" />
           <Tab label="Prediction" />
+          <Tab label="Settings" />
         </Tabs>
-        <NewLayer />
-        <Layers />
+        <Router tab={state.tab} />
       </>
     }
   </context.Consumer>;

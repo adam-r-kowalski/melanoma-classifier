@@ -3,9 +3,9 @@ services:
     data-labeler:
         image: adamkowalski/python
         volumes:
-            - ./data/:/data/
-            - ./data-partitioner/:/data-partitioner/
-            - ./.emacs.d/:/root/.emacs.d/
+            - ../data/:/data/
+            - ./:/data-partitioner/
+            - ../.emacs.d/:/root/.emacs.d/
         working_dir: /data-partitioner
         runtime: nvidia
         command: python data-partitioner.py
