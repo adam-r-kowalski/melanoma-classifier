@@ -2,6 +2,7 @@ import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
 import * as React from 'react';
 
 import { context, Dispatch } from '../context';
@@ -18,7 +19,7 @@ export default (): JSX.Element =>
   <context.Consumer>
     {({ state, dispatch }) =>
       <Drawer open={state.drawer} onClose={onClose(dispatch)}>
-        <List style={{ width: 250 }}>
+        <List style={{ width: 250 }} subheader={<ListSubheader>Models</ListSubheader>}>
           {Object.keys(state.models).map(name =>
             <ListItem button key={name} onClick={onClick(dispatch, name)}>
               <ListItemText primary={name} />

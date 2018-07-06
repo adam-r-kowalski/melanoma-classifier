@@ -46,7 +46,7 @@ export const empty: IState = {
       ],
     },
   },
-  tab: 0,
+  tab: 3,
   theme: createMuiTheme({
     palette: {
       primary: blue,

@@ -1,55 +1,19 @@
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
 import * as React from 'react';
 
-import { context, Dispatch } from '../context';
-import ChangeTabEvent from '../events/ChangeTabEvent';
-import { Layers } from './Layers';
-import { NewLayer } from './NewLayer';
+import { context } from '../context';
+import Router from './Router';
+import Tabs from './Tabs';
 
-const onChange = (dispatch: Dispatch) =>
-  (event: React.ChangeEvent<{}>, value: number) =>
-    dispatch(new ChangeTabEvent(value));
-
-const LayersRoute = (): JSX.Element =>
+const ModelExists = (): JSX.Element =>
   <>
-    <NewLayer />
-    <Layers />
+    <Tabs />
+    <Router />
   </>;
 
-const TrainingRoute = (): JSX.Element =>
-  <div>Not implemented yet</div>;
-
-const PredictionRoute = (): JSX.Element =>
-  <div>Not implemented yet</div>;
-
-const SettingsRoute = (): JSX.Element =>
-  <div>Not implemented yet</div>;
-
-interface IRouterProps {
-  tab: number;
-}
-
-const Router = (props: IRouterProps): JSX.Element => {
-  switch (props.tab) {
-    case 0: return <LayersRoute />;
-    case 1: return <TrainingRoute />;
-    case 2: return <PredictionRoute />;
-    case 3: return <SettingsRoute />;
-  }
-};
+const NoModelExists = (): JSX.Element =>
+  <div>No Model Exists</div>;
 
 export const Model = (): JSX.Element =>
   <context.Consumer>
-    {({ state, dispatch }) =>
-      <>
-        <Tabs centered value={state.tab} onChange={onChange(dispatch)}>
-          <Tab label="Layers" />
-          <Tab label="Training" />
-          <Tab label="Prediction" />
-          <Tab label="Settings" />
-        </Tabs>
-        <Router tab={state.tab} />
-      </>
-    }
+    {({ state }) => state.model ? <ModelExists /> : <NoModelExists />}
   </context.Consumer>;
