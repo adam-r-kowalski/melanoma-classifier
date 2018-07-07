@@ -6,19 +6,19 @@ import json
 routes = web.RouteTableDef()
 
 
-def directoryName(model):
+def directory_name(model):
     return '/models/{}'.format(model['name'])
 
 
-def createDirectory(model):
-    path = directoryName(model)
+def create_directory(model):
+    path = directory_name(model)
     if os.path.exists(path):
         shutil.rmtree(path)
     os.makedirs(path)
 
 
-async def writeJson(model):
-    path = '{}/model.json'.format(directoryName(model))
+async def write_json(model):
+    path = '{}/model.json'.format(directory_name(model))
     with open(path, 'w') as f:
         f.write(json.dumps(model))
 
@@ -26,8 +26,8 @@ async def writeJson(model):
 @routes.post('/')
 async def root(request):
     model = await request.json()
-    createDirectory(model)
-    await writeJson(model)
+    create_directory(model)
+    await write_json(model)
     return web.json_response({'some': 'data'})
 
 

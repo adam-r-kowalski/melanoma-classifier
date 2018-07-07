@@ -1,21 +1,17 @@
-import json
 import tensorflow as tf
 
 from dispatch import multi, method
 from fields import field_value, field_values
 
-tf.enable_eager_execution()
-
-
-with open("/models/Convolution/model.json") as f:
-    model = json.loads(f.read())
-
-layers = model['layers']
-
 
 @multi
 def layer(layer_json):
     return layer_json['name']
+
+
+@method(layer, 'Batch Normalizataion')
+def layer(batch_normalization):
+    return tf.keras.layers.BatchNormalization()
 
 
 @method(layer, 'Convolution 2D')
@@ -26,9 +22,33 @@ def layer(convolution2d):
     return tf.keras.layers.Conv2D(filters, kernel, strides)
 
 
+@method(layer, 'Dense')
+def layer(dense):
+    units = field_value(dense, 'units')
+    return tf.keras.layers.Dense(units)
+
+
+@method(layer, 'Dropout')
+def layer(dense):
+    rate = field_value(dense, 'rate')
+    return tf.keras.layers.Dropout(rate)
+
+
+@method(layer, 'Flatten')
+def layer(flatten):
+    return tf.keras.layers.Flatten()
+
+
+@method(layer, 'Rectified Linear Unit')
+def layer(rectified_linear_unit):
+    return tf.keras.layers.Activation('relu')
+
+
+@method(layer, 'Sigmoid')
+def layer(sigmoid):
+    return tf.keras.layers.Activation('sigmoid')
+
+
 @method(layer)
 def layer(unkown_layer):
     raise Exception('Invalid Layer')
-
-
-layer(layers[0]).get_config()
