@@ -5,7 +5,6 @@ services:
         volumes:
             - ./frontend/:/frontend/
             - ../.emacs.d/:/root/.emacs.d/
-            - ./models/:/models/
         stdin_open: true
         tty: true
         working_dir: /frontend
@@ -13,7 +12,7 @@ services:
             - "8888:8888"
         networks:
             - webapp
-        command: bash
+        command: yarn start
 
     model-saver:
         image: adamkowalski/python
@@ -21,9 +20,25 @@ services:
             - ./model-saver/:/model-saver/
             - ../.emacs.d/:/root/.emacs.d/
             - ./models/:/models/
+            - ../data/:/data/
         stdin_open: true
         tty: true
         working_dir: /model-saver
+        networks:
+            - webapp
+        command: python model_saver.py
+
+
+    model-runner:
+        image: adamkowalski/python
+        volumes:
+            - ./model-runner/:/model-runner/
+            - ../.emacs.d/:/root/.emacs.d/
+            - ./models/:/models/
+            - ../data/:/data/
+        stdin_open: true
+        tty: true
+        working_dir: /model-runner
         networks:
             - webapp
         command: bash

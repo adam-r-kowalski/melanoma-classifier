@@ -50,24 +50,24 @@ install [nvidia-docker](https://github.com/NVIDIA/nvidia-docker).
 This service will download the dataset from [The International Skin Imaging Collaboration](https://isic-archive.com/#images)
 who generously provide thousands of examples of various skin related diseases.
 
-`docker-compose -f docker-compose.data-downloader.yml up`
+`docker-compose -f data-downloader/docker-compose.yml up`
 
 ### Label the data
 
 This service will take our data and create an efficient binary representation which contains both
 the images as well as the labels.
 
-`docker-compose -f docker-compose.data-labeler.yml up`
+`docker-compose -f data-labeler/docker-compose.yml up`
 
 ## Partition the data
 
 This service will take our dataset and partition it into batches of 1000 as well as ensure that we have
 an even distribution of melanoma to non melanoma images
 
-`docker-compose -f docker-compose.data-partitioner.yml up`
+`docker-compose -f data-partitioner/docker-compose.yml up`
 
 ## Launch the webapp
 
 This service will allow you to construct and train models
 
-`docker-compose -f docker-compose.webapp.yml up`
+`docker-compose -f webapp/docker-compose.yml up`
