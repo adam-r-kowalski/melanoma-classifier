@@ -181,6 +181,7 @@
 (general-define-key
  :states '(normal visual)
  :keymaps 'python-mode-map
+ :prefix ","
  "e" 'elpy-shell-send-group)
 
 (use-package tide

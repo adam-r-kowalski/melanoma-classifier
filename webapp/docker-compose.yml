@@ -5,6 +5,7 @@ services:
         volumes:
             - ./frontend/:/frontend/
             - ../.emacs.d/:/root/.emacs.d/
+            - ./models/:/models/
         stdin_open: true
         tty: true
         working_dir: /frontend
@@ -19,6 +20,7 @@ services:
         volumes:
             - ./model-saver/:/model-saver/
             - ../.emacs.d/:/root/.emacs.d/
+            - ./models/:/models/
         stdin_open: true
         tty: true
         working_dir: /model-saver

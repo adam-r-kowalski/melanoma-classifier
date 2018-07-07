@@ -30,6 +30,7 @@ export const empty: IState = {
         new Flatten(),
         new Dense(),
       ],
+      name: 'Convolution',
     },
     Dense: {
       layers: [
@@ -44,6 +45,7 @@ export const empty: IState = {
         new BatchNormalization(),
         new Dense(),
       ],
+      name: 'Dense',
     },
   },
   tab: 0,

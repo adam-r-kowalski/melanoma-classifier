@@ -30,11 +30,11 @@ export default class Convolution2D implements ILayer {
       group: [
         {
           name: 'width',
-          value: 3,
+          value: 1,
         },
         {
           name: 'height',
-          value: 3,
+          value: 1,
         },
       ],
       name: 'strides',

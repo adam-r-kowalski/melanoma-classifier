@@ -6,7 +6,8 @@ const nextModel = counter('Model');
 
 export default class CreateModelEvent implements IEvent {
   public update(state: IState): IState {
-    state.models[nextModel()] = { layers: [] };
+    const name = nextModel();
+    state.models[name] = { name, layers: [] };
     return state;
   }
 }

@@ -8,6 +8,7 @@ export default class RenameModelEvent implements IEvent {
     if (this.newName === '' || this.newName === state.model) return state;
 
     state.models[this.newName] = state.models[state.model];
+    state.models[this.newName].name = this.newName;
     delete state.models[state.model];
     state.model = this.newName;
     return state;
