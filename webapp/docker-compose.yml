@@ -21,11 +21,15 @@ services:
             - ../.emacs.d/:/root/.emacs.d/
             - ./models/:/models/
             - ../data/:/data/
+            - ./library/:/library/
         stdin_open: true
         tty: true
         working_dir: /model-saver
         networks:
             - webapp
+        environment:
+            - PYTHONPATH=/library/:$PYTHONPATH
+        runtime: nvidia
         command: python model_saver.py
 
 
@@ -36,11 +40,13 @@ services:
             - ../.emacs.d/:/root/.emacs.d/
             - ./models/:/models/
             - ../data/:/data/
+            - ./library/:/library/
         stdin_open: true
         tty: true
         working_dir: /model-runner
         networks:
             - webapp
+        runtime: nvidia
         command: bash
 
 networks:

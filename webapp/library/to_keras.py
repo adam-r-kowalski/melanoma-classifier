@@ -1,8 +1,7 @@
 import tensorflow as tf
 
 from layer import layer
-
-tf.enable_eager_execution()
+from dataset import train_dataset
 
 
 def create_model(model_json):
@@ -14,6 +13,8 @@ def create_model(model_json):
 
 async def write_keras_model(model_json):
     model = create_model(model_json)
-    path = '/models/{}/model.h5'.format(model_json['name'])
-    tf.keras.models.save_model(
-        model, path, overwrite=True, include_optimizer=False)
+    path = '/models/{}/weights.h5'.format(model_json['name'])
+    dataset = train_dataset().batch(1)
+    image, _ = next(iter(dataset))
+    model(image)
+    model.save_weights(path, overwrite=True)

@@ -1,9 +1,12 @@
+import tensorflow as tf
 from aiohttp import web
 import os
 import shutil
 import json
 
 from to_keras import write_keras_model
+
+tf.enable_eager_execution()
 
 routes = web.RouteTableDef()
 
