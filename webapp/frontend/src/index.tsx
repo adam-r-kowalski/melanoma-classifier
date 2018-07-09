@@ -7,6 +7,7 @@ import Drawer from './components/Drawer';
 import { Model } from './components/Model';
 import { context } from './context';
 import { IEvent } from './events';
+import LoadModelsEvent from './events/LoadModelsEvent';
 import { empty, IState } from './state';
 
 document.body.style.margin = '0';
@@ -29,6 +30,10 @@ class App extends React.Component<{}, IState> {
         </MuiThemeProvider>
       </context.Provider>
     );
+  }
+
+  public componentDidMount() {
+    this.dispatch(new LoadModelsEvent(this.dispatch));
   }
 
   private dispatch = (event: IEvent): void => {

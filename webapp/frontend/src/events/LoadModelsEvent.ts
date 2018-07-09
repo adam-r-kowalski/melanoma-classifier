@@ -1,0 +1,19 @@
+import { Dispatch } from '../context';
+import { IState } from '../state';
+import { IEvent } from './';
+import SetModelsEvent from './SetModelsEvent';
+
+async function loadModels(dispatch: Dispatch) {
+  const response = await fetch('/model-loader');
+  const models = await response.json();
+  dispatch(new SetModelsEvent(models));
+}
+
+export default class LoadModelsEvent implements IEvent {
+  constructor(private dispatch: Dispatch) { }
+
+  public update(state: IState): IState {
+    loadModels(this.dispatch);
+    return state;
+  }
+}

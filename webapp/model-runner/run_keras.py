@@ -1,33 +1,31 @@
 import tensorflow as tf
-from multiprocessing import cpu_count
+import json
 
-tf.enable_eager_execution()
+from dataset import train_dataset
+from to_keras import create_model
 
-files = tf.gfile.Glob('/data/tf-records/batches/*.tfrecords')
+config = tf.ConfigProto()
+config.gpu_options.allow_growth = True
 
+tf.enable_eager_execution(config)
 
-def decode_example(example):
-    parsed_example = tf.parse_single_example(example, {
-        'image': tf.FixedLenFeature([], tf.string),
-        'label': tf.FixedLenFeature([], tf.int64)
-    })
-    image = tf.image.decode_png(parsed_example['image'])
-    label = parsed_example['label']
-    return image / 255, tf.reshape(label, (1,))
-
-
-num_parallel_calls = cpu_count()
 learning_rate = 0.01
 
-
-dataset = tf.data.TFRecordDataset(files)
-dataset = dataset.map(decode_example, num_parallel_calls)
-dataset = dataset.batch(10)
+dataset = train_dataset().batch(32).shuffle(100).prefetch(2)
 
 images, labels = next(iter(dataset))
 
-model = tf.keras.models.load_model(
-    '/models/Convolution/model.h5', compile=False)
+with open('/models/Convolution/model.json') as f:
+    model_json = json.loads(f.read())
+
+
+model = create_model(model_json)
+
+
+model(images)
+
+
+model.load_weights('/models/Convolution/weights.h5')
 
 
 def loss(model, images, labels):
@@ -42,23 +40,31 @@ def grad(model, images, labels):
 
 optimizer = tf.train.AdamOptimizer(learning_rate)
 
-for images, labels in dataset:
-    grads = grad(model, images, labels)
-    optimizer.apply_gradients(zip(grads, model.variables),
-                              tf.train.get_or_create_global_step())
-    predictions = tf.cast(tf.round(tf.sigmoid(model(images))), tf.int64)
 
+def train():
+    for images, labels in dataset:
+        grads = grad(model, images, labels)
+        optimizer.apply_gradients(zip(grads, model.variables),
+                                  tf.train.get_or_create_global_step())
+
+
+predictions = tf.cast(tf.round(tf.sigmoid(model(images))), tf.int64)
 predictions
 
 labels
 
+tf.equal(predictions, labels)
 
 model(images)
 
-
 loss(model, images, labels)
 
+grads = grad(model, images, labels)
 
-tf.keras.models.save_model(
-    model, '/models/Convolution/model.h5',
-    overwrite=True, include_optimizer=False)
+optimizer.apply_gradients(zip(grads, model.variables),
+                          tf.train.get_or_create_global_step())
+
+train()
+
+
+model.save_weights('/models/Convolution/weights.h5', overwrite=True)

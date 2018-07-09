@@ -9,6 +9,8 @@ import Flatten from './layers/Flatten';
 import RectifiedLinearUnit from './layers/RectifiedLinearUnit';
 import { IModel } from './model';
 
+export interface IModels { [name: string]: IModel; }
+
 export interface IState {
   drawer: boolean;
   model: string;

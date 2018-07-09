@@ -23,6 +23,10 @@ const config: webpack.Configuration = {
     },
     port: 8888,
     proxy: {
+      '/model-loader': {
+        pathRewrite: { '^/model-loader': '' },
+        target: 'http://model-loader:8080/',
+      },
       '/model-runner': {
         pathRewrite: { '^/model-runner': '' },
         target: 'http://model-runner:8080/',

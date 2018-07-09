@@ -6,7 +6,10 @@ import json
 
 from to_keras import write_keras_model
 
-tf.enable_eager_execution()
+config = tf.ConfigProto()
+config.gpu_options.allow_growth = True
+
+tf.enable_eager_execution(config)
 
 routes = web.RouteTableDef()
 

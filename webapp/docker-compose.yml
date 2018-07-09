@@ -12,7 +12,7 @@ services:
             - "8888:8888"
         networks:
             - webapp
-        command: yarn start
+        command: bash
 
     model-saver:
         image: adamkowalski/python
@@ -46,6 +46,25 @@ services:
         working_dir: /model-runner
         networks:
             - webapp
+        environment:
+            - PYTHONPATH=/library/:$PYTHONPATH
+        runtime: nvidia
+        command: bash
+
+    model-loader:
+        image: adamkowalski/python
+        volumes:
+            - ./model-loader/:/model-loader/
+            - ../.emacs.d/:/root/.emacs.d/
+            - ./models/:/models/
+            - ./library/:/library/
+        stdin_open: true
+        tty: true
+        working_dir: /model-loader
+        networks:
+            - webapp
+        environment:
+            - PYTHONPATH=/library/:$PYTHONPATH
         runtime: nvidia
         command: bash
 
