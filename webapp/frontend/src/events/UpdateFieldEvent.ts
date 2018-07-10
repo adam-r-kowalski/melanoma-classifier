@@ -18,7 +18,6 @@ export default class UpdateFieldEvent implements IEvent {
     const name = group || this.props.field;
     const value = Number(this.props.value);
 
-    const log = console.log;
     for (const field of layer.fields) {
       if (field.name === name) {
         if (group) {

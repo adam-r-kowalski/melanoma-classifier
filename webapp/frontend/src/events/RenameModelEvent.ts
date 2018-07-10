@@ -1,24 +1,24 @@
+import { Dispatch } from '../context';
 import { IState } from '../state';
 import { IEvent } from './';
+import RenameModelCompleteEvent from './RenameModelCompleteEvent';
 
-async function renameModel(oldName: string, newName: string) {
-  const log = console.log;
-
+async function renameModel(oldName: string, newName: string, dispatch: Dispatch) {
   const response = await fetch('/model-renamer', {
     body: JSON.stringify({ old: oldName, new: newName }),
     method: 'POST',
   });
   const json = await response.json();
-  log(json);
+  dispatch(new RenameModelCompleteEvent(oldName, newName));
 }
 
 export default class RenameModelEvent implements IEvent {
-  constructor(private newName: string) { }
+  constructor(private newName: string, private dispatch: Dispatch) { }
 
   public update(state: IState): IState {
     if (this.newName === '' || this.newName === state.model) return state;
 
-    renameModel(state.model, this.newName);
+    renameModel(state.model, this.newName, this.dispatch);
 
     state.models[this.newName] = state.models[state.model];
     state.models[this.newName].name = this.newName;

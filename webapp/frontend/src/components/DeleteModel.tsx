@@ -47,7 +47,7 @@ export default class RenameModel extends React.Component<{}, IState> {
 
   private onClick = (dispatch: Dispatch) =>
     () => {
-      dispatch(new DeleteModelEvent(this.state.name));
+      dispatch(new DeleteModelEvent(this.state.name, dispatch));
       this.setState({ name: '' });
     }
 }
