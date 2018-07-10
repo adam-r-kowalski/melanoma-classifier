@@ -22,8 +22,6 @@ services:
             - ./models/:/models/
             - ../data/:/data/
             - ./library/:/library/
-        stdin_open: true
-        tty: true
         working_dir: /model-saver
         networks:
             - webapp
@@ -57,16 +55,36 @@ services:
             - ./model-loader/:/model-loader/
             - ../.emacs.d/:/root/.emacs.d/
             - ./models/:/models/
-            - ./library/:/library/
-        stdin_open: true
-        tty: true
         working_dir: /model-loader
         networks:
             - webapp
-        environment:
-            - PYTHONPATH=/library/:$PYTHONPATH
+        runtime: nvidia
+        command: python model_loader.py
+
+    model-deleter:
+        image: adamkowalski/python
+        volumes:
+            - ./model-deleter/:/model-deleter/
+            - ../.emacs.d/:/root/.emacs.d/
+            - ./models/:/models/
+        working_dir: /model-deleter
+        networks:
+            - webapp
+        runtime: nvidia
+        command: python model_deleter.py
+
+    model-renamer:
+        image: adamkowalski/python
+        volumes:
+            - ./model-renamer/:/model-renamer/
+            - ../.emacs.d/:/root/.emacs.d/
+            - ./models/:/models/
+        working_dir: /model-deleter
+        networks:
+            - webapp
         runtime: nvidia
         command: bash
+
 
 networks:
     webapp:
