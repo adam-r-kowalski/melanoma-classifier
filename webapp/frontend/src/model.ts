@@ -15,7 +15,18 @@ export interface ILayer {
   fields?: IField[];
 }
 
+export const optimizers = [
+  'Adadelta',
+  'Adagrad',
+  'Adam',
+  'Gradien Descent',
+  'Momentum',
+  'RMSProp',
+];
+
 export interface IModel {
   layers: ILayer[];
+  learningRate: number;
+  optimizer: string;
   name: string;
 }

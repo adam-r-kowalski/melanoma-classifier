@@ -24,6 +24,7 @@ export default class RenameModelEvent implements IEvent {
     state.models[this.newName].name = this.newName;
     delete state.models[state.model];
     state.model = this.newName;
+    state.tab = 0;
     return state;
   }
 }

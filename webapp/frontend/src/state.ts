@@ -23,7 +23,7 @@ export const empty: IState = {
   drawer: false,
   model: undefined,
   models: {},
-  tab: 0,
+  tab: 1,
   theme: createMuiTheme({
     palette: {
       primary: blue,

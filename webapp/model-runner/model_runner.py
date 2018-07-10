@@ -18,6 +18,7 @@ async def root(request):
         print(msg_json)
 
     print('ws connection closed')
+    return ws
 
 
 app = web.Application()

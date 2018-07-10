@@ -1,4 +1,5 @@
 import tensorflow as tf
+import tensorflow.contrib.eager as tfe
 import json
 
 from dataset import train_dataset
@@ -9,7 +10,7 @@ config.gpu_options.allow_growth = True
 
 tf.enable_eager_execution(config)
 
-learning_rate = 0.01
+learning_rate = 0.1
 
 dataset = train_dataset().batch(32).shuffle(100).prefetch(2)
 
@@ -41,30 +42,30 @@ def grad(model, images, labels):
 optimizer = tf.train.AdamOptimizer(learning_rate)
 
 
-def train():
-    for images, labels in dataset:
-        grads = grad(model, images, labels)
-        optimizer.apply_gradients(zip(grads, model.variables),
-                                  tf.train.get_or_create_global_step())
+def train(model, epochs=1):
+    for epoch in range(epochs):
+        loss_average = tfe.metrics.Mean()
+        accuracy_average = tfe.metrics.Accuracy()
+
+        for iteration, (images, labels) in enumerate(dataset):
+            grads = grad(model, images, labels)
+            optimizer.apply_gradients(
+                zip(grads, model.variables),
+                tf.train.get_or_create_global_step())
+
+            predictions = tf.cast(
+                tf.round(tf.sigmoid(model(images))), tf.int64)
+
+            loss_average(loss(model, images, labels))
+            accuracy_average(predictions, labels)
+
+            if iteration % 100 == 0:
+                print('epoch {} iteration {} loss {}, accuracy {}'.format(
+                    epoch, iteration,
+                    loss_average.result(), accuracy_average.result()))
 
 
-predictions = tf.cast(tf.round(tf.sigmoid(model(images))), tf.int64)
-predictions
-
-labels
-
-tf.equal(predictions, labels)
-
-model(images)
-
-loss(model, images, labels)
-
-grads = grad(model, images, labels)
-
-optimizer.apply_gradients(zip(grads, model.variables),
-                          tf.train.get_or_create_global_step())
-
-train()
+train(model, epochs=5)
 
 
 model.save_weights('/models/Convolution/weights.h5', overwrite=True)

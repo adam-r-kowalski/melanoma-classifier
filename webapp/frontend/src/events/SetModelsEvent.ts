@@ -5,6 +5,7 @@ export default class SetModelsEvent implements IEvent {
   constructor(private models: IModels) { }
 
   public update(state: IState): IState {
-    return { ...state, models: this.models };
+    const model = Object.keys(this.models)[0];
+    return { ...state, model, models: this.models };
   }
 }

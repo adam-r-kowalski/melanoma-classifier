@@ -23,21 +23,24 @@ const config: webpack.Configuration = {
     },
     port: 8888,
     proxy: {
-      '/model-loader': {
-        pathRewrite: { '^/model-loader': '' },
-        target: 'http://model-loader:8080/',
-      },
       '/model-deleter': {
         pathRewrite: { '^/model-deleter': '' },
         target: 'http://model-deleter:8080/',
+      },
+      '/model-loader': {
+        pathRewrite: { '^/model-loader': '' },
+        target: 'http://model-loader:8080/',
       },
       '/model-renamer': {
         pathRewrite: { '^/model-renamer': '' },
         target: 'http://model-renamer:8080/',
       },
       '/model-runner': {
+        changeOrigin: true,
         pathRewrite: { '^/model-runner': '' },
-        target: 'http://model-runner:8080/',
+        secure: false,
+        target: 'ws://model-runner:8080/',
+        ws: true,
       },
       '/model-saver': {
         pathRewrite: { '^/model-saver': '' },

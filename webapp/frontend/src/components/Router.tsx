@@ -3,9 +3,7 @@ import * as React from 'react';
 import { context } from '../context';
 import LayersRoute from './LayersRoute';
 import SettingsRoute from './SettingsRoute';
-
-const TrainingRoute = (): JSX.Element =>
-  <div>Not implemented yet</div>;
+import TrainingRoute from './TrainingRoute';
 
 const PredictionRoute = (): JSX.Element =>
   <div>Not implemented yet</div>;
