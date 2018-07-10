@@ -7,6 +7,7 @@ export default class InsertLayerEvent implements IEvent {
 
   public update(state: IState): IState {
     state.models[state.model].layers.push(layersList[this.layer]());
+    state.notifications.push({ message: `Layer ${this.layer} added` });
     return state;
   }
 }

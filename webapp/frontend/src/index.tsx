@@ -5,6 +5,7 @@ import * as ReactDOM from 'react-dom';
 import AppBar from './components/AppBar';
 import Drawer from './components/Drawer';
 import { Model } from './components/Model';
+import Notifications from './components/Notifications';
 import { context } from './context';
 import { IEvent } from './events';
 import LoadModelsEvent from './events/LoadModelsEvent';
@@ -27,6 +28,7 @@ class App extends React.Component<{}, IState> {
           <Drawer />
           <AppBar />
           <Model />
+          <Notifications />
         </MuiThemeProvider>
       </context.Provider>
     );

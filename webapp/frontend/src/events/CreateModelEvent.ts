@@ -10,6 +10,7 @@ export default class CreateModelEvent implements IEvent {
     const name = nextModel();
     state.models[name] = {
       name,
+      batchSize: 32,
       layers: [],
       learningRate: 0.01,
       optimizer: optimizers[0],

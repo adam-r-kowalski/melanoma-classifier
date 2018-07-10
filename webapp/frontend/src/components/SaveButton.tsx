@@ -12,7 +12,7 @@ const buttonStyle: React.CSSProperties = {
 };
 
 const onClick = (dispatch: Dispatch) =>
-  () => dispatch(new SaveModelEvent());
+  () => dispatch(new SaveModelEvent(dispatch));
 
 export default (): JSX.Element =>
   <context.Consumer>

@@ -25,6 +25,7 @@ export const optimizers = [
 ];
 
 export interface IModel {
+  batchSize: number;
   layers: ILayer[];
   learningRate: number;
   optimizer: string;

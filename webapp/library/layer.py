@@ -9,7 +9,7 @@ def layer(layer_json):
     return layer_json['name']
 
 
-@method(layer, 'Batch Normalizataion')
+@method(layer, 'Batch Normalization')
 def layer(batch_normalization):
     return tf.keras.layers.BatchNormalization()
 

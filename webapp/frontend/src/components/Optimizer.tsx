@@ -10,10 +10,10 @@ import PlayArrow from '@material-ui/icons/PlayArrow';
 import * as React from 'react';
 
 import { context, Dispatch, IContext } from '../context';
-import TrainModelEvent from '../events/TrainModelEvent';
-import { optimizers } from '../model';
 import ChangeLearningRateEvent from '../events/ChangeLearningRateEvent';
 import ChangeOptimizerEvent from '../events/ChangeOptimizerEvent';
+import TrainModelEvent from '../events/TrainModelEvent';
+import { optimizers } from '../model';
 
 const styles = {
   formControl: {

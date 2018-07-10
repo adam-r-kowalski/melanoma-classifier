@@ -1,7 +1,7 @@
 import counter from '../counter';
 import { ILayer } from '../model';
 
-const name = 'Batch Normalizataion';
+const name = 'Batch Normalization';
 const nextId = counter(name);
 
 export default class BatchNormalization implements ILayer {

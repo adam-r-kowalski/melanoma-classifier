@@ -10,7 +10,7 @@ config.gpu_options.allow_growth = True
 
 tf.enable_eager_execution(config)
 
-learning_rate = 0.1
+learning_rate = 0.01
 
 dataset = train_dataset().batch(32).shuffle(100).prefetch(2)
 
@@ -63,6 +63,8 @@ def train(model, epochs=1):
                 print('epoch {} iteration {} loss {}, accuracy {}'.format(
                     epoch, iteration,
                     loss_average.result(), accuracy_average.result()))
+                loss_average = tfe.metrics.Mean()
+                accuracy_average = tfe.metrics.Accuracy()
 
 
 train(model, epochs=5)

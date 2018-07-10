@@ -1,0 +1,2 @@
+Batch Normalization mispelled
+Notification when creating layer

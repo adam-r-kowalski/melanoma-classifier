@@ -9,10 +9,17 @@ import Flatten from './layers/Flatten';
 import RectifiedLinearUnit from './layers/RectifiedLinearUnit';
 import { IModel } from './model';
 
-export interface IModels { [name: string]: IModel; }
+export interface IModels {
+  [name: string]: IModel;
+}
+
+export interface INotification {
+  message: string;
+}
 
 export interface IState {
   drawer: boolean;
+  notifications: INotification[];
   model: string;
   models: { [name: string]: IModel };
   tab: number;
@@ -23,6 +30,7 @@ export const empty: IState = {
   drawer: false,
   model: undefined,
   models: {},
+  notifications: [],
   tab: 1,
   theme: createMuiTheme({
     palette: {
