@@ -21,35 +21,8 @@ export interface IState {
 
 export const empty: IState = {
   drawer: false,
-  model: 'Convolution',
-  models: {
-    Convolution: {
-      layers: [
-        new Convolution2D(),
-        new Dropout(),
-        new RectifiedLinearUnit(),
-        new BatchNormalization(),
-        new Flatten(),
-        new Dense(),
-      ],
-      name: 'Convolution',
-    },
-    Dense: {
-      layers: [
-        new Flatten(),
-        new Dense(),
-        new Dropout(),
-        new RectifiedLinearUnit(),
-        new BatchNormalization(),
-        new Dense(),
-        new Dropout(),
-        new RectifiedLinearUnit(),
-        new BatchNormalization(),
-        new Dense(),
-      ],
-      name: 'Dense',
-    },
-  },
+  model: undefined,
+  models: {},
   tab: 0,
   theme: createMuiTheme({
     palette: {

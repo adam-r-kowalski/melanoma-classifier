@@ -79,11 +79,11 @@ services:
             - ./model-renamer/:/model-renamer/
             - ../.emacs.d/:/root/.emacs.d/
             - ./models/:/models/
-        working_dir: /model-deleter
+        working_dir: /model-renamer
         networks:
             - webapp
         runtime: nvidia
-        command: bash
+        command: model_renamer.py
 
 
 networks:

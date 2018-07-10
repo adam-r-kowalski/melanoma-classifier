@@ -31,6 +31,10 @@ const config: webpack.Configuration = {
         pathRewrite: { '^/model-deleter': '' },
         target: 'http://model-deleter:8080/',
       },
+      '/model-renamer': {
+        pathRewrite: { '^/model-renamer': '' },
+        target: 'http://model-renamer:8080/',
+      },
       '/model-runner': {
         pathRewrite: { '^/model-runner': '' },
         target: 'http://model-runner:8080/',
