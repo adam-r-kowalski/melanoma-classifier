@@ -6,13 +6,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import PlayArrow from '@material-ui/icons/PlayArrow';
 import * as React from 'react';
 
 import { context, Dispatch, IContext } from '../context';
+import ChangeBatchSizeEvent from '../events/ChangeBatchSizeEvent';
 import ChangeLearningRateEvent from '../events/ChangeLearningRateEvent';
 import ChangeOptimizerEvent from '../events/ChangeOptimizerEvent';
-import TrainModelEvent from '../events/TrainModelEvent';
 import { optimizers } from '../model';
 
 const styles = {
@@ -51,14 +50,30 @@ const LearningRate = (ctx: IContext): JSX.Element =>
     onChange={changeLearningRate(ctx.dispatch)}
   />;
 
+const changeBatchSize = (dispatch: Dispatch) =>
+  (event: React.ChangeEvent<HTMLInputElement>) =>
+    dispatch(new ChangeBatchSizeEvent(Number(event.target.value)));
+
+const BatchSize = (ctx: IContext): JSX.Element =>
+  <TextField
+    label="Batch Size"
+    type="number"
+    value={ctx.state.models[ctx.state.model].batchSize}
+    onChange={changeBatchSize(ctx.dispatch)}
+    style={{ marginTop: 10 }}
+  />;
+
 export default (): JSX.Element =>
   <context.Consumer>
     {ctx =>
       <Card style={{ width: 500, margin: '10px auto' }}>
         <CardContent>
-          <Typography variant="headline">Optimizer</Typography>
+          <Typography variant="headline" style={{ marginBottom: 10 }}>
+            Optimizer
+	  </Typography>
           <LearningRate {...ctx} />
           <Variant {...ctx} />
+          <BatchSize {...ctx} />
         </CardContent>
       </Card>}
   </context.Consumer>;

@@ -1,15 +1,7 @@
-import tensorflow as tf
 from aiohttp import web
 import os
 import shutil
 import json
-
-from to_keras import write_keras_model
-
-config = tf.ConfigProto()
-config.gpu_options.allow_growth = True
-
-tf.enable_eager_execution(config)
 
 routes = web.RouteTableDef()
 
@@ -36,7 +28,6 @@ async def root(request):
     model_json = await request.json()
     create_directory(model_json)
     await write_json(model_json)
-    await write_keras_model(model_json)
     return web.json_response({'status': 'saved'})
 
 

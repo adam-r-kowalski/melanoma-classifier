@@ -7,6 +7,8 @@ async function trainModel() {
 }
 
 export default class TrainModelEvent implements IEvent {
+  constructor(private epochs: number) { }
+
   public update(state: IState): IState {
     trainModel();
     return state;

@@ -19,7 +19,7 @@ export const optimizers = [
   'Adadelta',
   'Adagrad',
   'Adam',
-  'Gradien Descent',
+  'Gradient Descent',
   'Momentum',
   'RMSProp',
 ];
