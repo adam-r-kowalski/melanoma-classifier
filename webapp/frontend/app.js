@@ -6,8 +6,9 @@ const proxy = require('http-proxy-middleware');
 
 const webpackConfig = require('./webpack.config');
 
-const app = express();
 const compiler = webpack(webpackConfig);
+
+const app = express();
 
 app.use(webpackDevMiddleware(compiler));
 app.use(webpackHotMiddleware(compiler));
@@ -22,12 +23,6 @@ app.use(proxy('/model-renamer', {
     target: 'http://model-renamer:8080/',
 }));
 
-app.use(proxy('/model-runner', {
-    pathRewrite: { '^/model-runner': '' },
-    target: 'ws://model-runner:8080/',
-    ws: true,
-}));
-
 app.use(proxy('/model-saver', {
     pathRewrite: { '^/model-saver': '' },
     target: 'http://model-saver:8080/',
@@ -38,4 +33,16 @@ app.use(proxy('/model-loader', {
     target: 'http://model-loader:8080/'
 }));
 
-app.listen(8888, () => console.log('Example app listening on port 8888!'));
+const server = app.listen(
+    8888,
+    () => console.log('listening on *:8888'));
+
+const io = require('socket.io').listen(server);
+
+io.on('connection', socket => {
+    console.log('a user connected');
+
+    socket.on('disconnect', () => console.log('a user disconnected'));
+});
+
+
