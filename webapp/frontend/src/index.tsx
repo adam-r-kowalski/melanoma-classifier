@@ -1,6 +1,7 @@
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { hot } from 'react-hot-loader';
 
 import AppBar from './components/AppBar';
 import Drawer from './components/Drawer';
@@ -43,4 +44,6 @@ class App extends React.Component<{}, IState> {
   }
 }
 
-ReactDOM.render(<App />, document.getElementById('app'));
+const HotApp = hot(module)(App);
+
+ReactDOM.render(<HotApp />, document.getElementById('app'));

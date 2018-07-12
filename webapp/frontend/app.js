@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
 const express = require('express');
 const proxy = require('http-proxy-middleware');
 
@@ -9,6 +10,7 @@ const app = express();
 const compiler = webpack(webpackConfig);
 
 app.use(webpackDevMiddleware(compiler));
+app.use(webpackHotMiddleware(compiler));
 
 app.use(proxy('/model-deleter', {
     pathRewrite: { '^/model-deleter': '' },

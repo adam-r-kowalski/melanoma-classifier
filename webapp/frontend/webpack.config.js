@@ -5,7 +5,10 @@ const webpack = require('webpack');
 module.exports = {
     mode: 'development',
 
-    entry: './src/index.tsx',
+    entry: [
+	'webpack-hot-middleware/client',
+	'./src/index.tsx'
+    ],
 
     output: {
 	filename: 'bundle.js',
@@ -40,5 +43,6 @@ module.exports = {
 	    template: HtmlWebpackTemplate,
 	    title: 'Melanoma Classifier',
 	}),
+	new webpack.HotModuleReplacementPlugin(),
     ],
 };
