@@ -15,7 +15,8 @@ const Epochs = (ctx: IContext): JSX.Element =>
 
 const BatchSize = (ctx: IContext): JSX.Element =>
   <TextField
-    label="Epochs"
+    label="Batch Size"
+    style={{ margin: '0 10px' }}
     type="number"
     value={ctx.state.models[ctx.state.model].batchSize}
   />;
