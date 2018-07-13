@@ -3,6 +3,7 @@ const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const express = require('express');
 const proxy = require('http-proxy-middleware');
+const WebSocket = require('ws');
 
 const webpackConfig = require('./webpack.config');
 
@@ -40,9 +41,27 @@ const server = app.listen(
 const io = require('socket.io').listen(server);
 
 io.on('connection', socket => {
-    console.log('a user connected');
+    const modelRunner = new WebSocket('ws://model-runner:8080')
 
-    socket.on('disconnect', () => console.log('a user disconnected'));
+    modelRunner.on('open', () => {
+	console.log('model runner open');
+
+	socket.on('message', message => {
+	    console.log('socket message', message);
+	    modelRunner.send(message);
+	});
+    });
+
+    modelRunner.on('message', message => {
+	console.log('model runner message', message);
+	socket.emit('message', message);
+    });
+
+    socket.on('disconnect', () => {
+	console.log('socket disconnected');
+	modelRunner.close();
+    });
+
+    modelRunner.on('close', () => console.log('model runner closed'));
 });
-
 

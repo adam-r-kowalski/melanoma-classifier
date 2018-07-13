@@ -9,6 +9,7 @@ import { Model } from './components/Model';
 import Notifications from './components/Notifications';
 import { context } from './context';
 import { IEvent } from './events';
+import AppStartedEvent from './events/AppStartedEvent';
 import LoadModelsEvent from './events/LoadModelsEvent';
 import { empty, IState } from './state';
 
@@ -36,7 +37,7 @@ class App extends React.Component<{}, IState> {
   }
 
   public componentDidMount() {
-    this.dispatch(new LoadModelsEvent(this.dispatch));
+    this.dispatch(new AppStartedEvent(this.dispatch));
   }
 
   private dispatch = (event: IEvent): void => {

@@ -22,7 +22,7 @@ export default class Train extends React.Component<{}, IState> {
   public render() {
     return (
       <context.Consumer>
-        {({ dispatch }) =>
+        {({ dispatch, state }) =>
           <Card style={{ width: 500, margin: '10px auto' }}>
             <CardContent>
               <Typography variant="headline">Train</Typography>
@@ -31,6 +31,7 @@ export default class Train extends React.Component<{}, IState> {
             <CardActions>
               <Button
                 color="primary"
+                disabled={!state.modelRunner.ready}
                 onClick={() => dispatch(new TrainModelEvent(this.state.epochs))}
               >
                 Begin Training

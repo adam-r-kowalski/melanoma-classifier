@@ -17,6 +17,8 @@ async def root(request):
         msg_json = json.loads(msg.data)
         print(msg_json)
 
+        ws.send_json({'training': 'started'})
+
     print('ws connection closed')
     return ws
 
