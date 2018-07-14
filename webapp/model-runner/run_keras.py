@@ -1,5 +1,4 @@
 import tensorflow as tf
-import tensorflow.contrib.eager as tfe
 import json
 
 from dataset import train_dataset
@@ -10,23 +9,14 @@ config.gpu_options.allow_growth = True
 
 tf.enable_eager_execution(config)
 
-learning_rate = 0.01
 
-dataset = train_dataset().batch(32).shuffle(100).prefetch(2)
-
-images, labels = next(iter(dataset))
-
-with open('/models/Convolution/model.json') as f:
-    model_json = json.loads(f.read())
+def read_json(name):
+    with open('/models/{}/model.json'.format(name)) as f:
+        return json.loads(f.read())
 
 
-model = create_model(model_json)
-
-
-model(images)
-
-
-model.load_weights('/models/Convolution/weights.h5')
+def dataset(batch_size):
+    return train_dataset().batch(batch_size).shuffle(100).prefetch(2)
 
 
 def loss(model, images, labels):
@@ -39,15 +29,12 @@ def grad(model, images, labels):
     return tape.gradient(loss_value, model.variables)
 
 
-optimizer = tf.train.AdamOptimizer(learning_rate)
-
-
-def train(model, epochs=1):
+def train(ws, model, optimizer, epochs, batch_size):
     for epoch in range(epochs):
-        loss_average = tfe.metrics.Mean()
-        accuracy_average = tfe.metrics.Accuracy()
+        correct = 0
+        total = 0
 
-        for iteration, (images, labels) in enumerate(dataset):
+        for iteration, (images, labels) in enumerate(dataset(batch_size)):
             grads = grad(model, images, labels)
             optimizer.apply_gradients(
                 zip(grads, model.variables),
@@ -56,18 +43,23 @@ def train(model, epochs=1):
             predictions = tf.cast(
                 tf.round(tf.sigmoid(model(images))), tf.int64)
 
-            loss_average(loss(model, images, labels))
-            accuracy_average(predictions, labels)
+            correct += tf.reduce_sum(
+                tf.cast(
+                    tf.equal(predictions, labels), tf.int32))
 
-            if iteration % 100 == 0:
-                print('epoch {} iteration {} loss {}, accuracy {}'.format(
-                    epoch, iteration,
-                    loss_average.result(), accuracy_average.result()))
-                loss_average = tfe.metrics.Mean()
-                accuracy_average = tfe.metrics.Accuracy()
-
-
-train(model, epochs=5)
+            total += images.shape[0]
+            ws.send_json({
+                'accuracy': (correct / total).numpy(),
+                'epoch': epoch,
+                'iteration': iteration
+            })
 
 
-model.save_weights('/models/Convolution/weights.h5', overwrite=True)
+def train_model(ws, msg_json):
+    name = msg_json['model']
+    epochs = msg_json['epochs']
+    model_json = read_json(name)
+    batch_size = model_json['batchSize']
+    model, optimizer = create_model(model_json)
+    train(ws, model, optimizer, epochs, batch_size)
+    model.save_weights('/models/{}/weights.h5'.format(name), overwrite=True)

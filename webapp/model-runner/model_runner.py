@@ -1,6 +1,8 @@
 from aiohttp import web
 import json
 
+from run_keras import train_model
+
 routes = web.RouteTableDef()
 
 
@@ -18,6 +20,8 @@ async def root(request):
         print(msg_json)
 
         ws.send_json({'training': 'started'})
+
+        train_model(ws, msg_json)
 
     print('ws connection closed')
     return ws

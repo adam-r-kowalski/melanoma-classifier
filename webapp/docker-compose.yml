@@ -85,20 +85,6 @@ services:
         runtime: nvidia
         command: python model_renamer.py
 
-    demo:
-        image: adamkowalski/python
-        volumes:
-            - ./demo/:/demo/
-            - ../.emacs.d/:/root/.emacs.d/
-        stdin_open: true
-        tty: true
-        working_dir: /demo
-        networks:
-            - webapp
-        runtime: nvidia
-        command: bash
-
-
 networks:
     webapp:
 
