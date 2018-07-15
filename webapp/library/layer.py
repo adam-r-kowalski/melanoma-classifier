@@ -5,17 +5,17 @@ from fields import field_value, field_values
 
 
 @multi
-def layer(layer_json):
+def layer(layer_json, train):
     return layer_json['name']
 
 
 @method(layer, 'Batch Normalization')
-def layer(batch_normalization):
+def layer(batch_normalization, train):
     return tf.keras.layers.BatchNormalization()
 
 
 @method(layer, 'Convolution 2D')
-def layer(convolution2d):
+def layer(convolution2d, train):
     filters = field_value(convolution2d, 'filters')
     kernel = field_values(convolution2d, 'kernel', ['width', 'height'])
     strides = field_values(convolution2d, 'strides', ['width', 'height'])
@@ -23,32 +23,27 @@ def layer(convolution2d):
 
 
 @method(layer, 'Dense')
-def layer(dense):
+def layer(dense, train):
     units = field_value(dense, 'units')
     return tf.keras.layers.Dense(units)
 
 
 @method(layer, 'Dropout')
-def layer(dense):
-    rate = field_value(dense, 'rate')
+def layer(dense, train):
+    rate = field_value(dense, 'rate') if train else 0.0
     return tf.keras.layers.Dropout(rate)
 
 
 @method(layer, 'Flatten')
-def layer(flatten):
+def layer(flatten, train):
     return tf.keras.layers.Flatten()
 
 
 @method(layer, 'Rectified Linear Unit')
-def layer(rectified_linear_unit):
+def layer(rectified_linear_unit, train):
     return tf.keras.layers.Activation('relu')
 
 
 @method(layer, 'Sigmoid')
-def layer(sigmoid):
+def layer(sigmoid, train):
     return tf.keras.layers.Activation('sigmoid')
-
-
-@method(layer)
-def layer(unkown_layer):
-    raise Exception('Invalid Layer')

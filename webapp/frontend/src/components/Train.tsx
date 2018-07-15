@@ -45,7 +45,7 @@ export default class Train extends React.Component<{}, IState> {
   private epochs() {
     return (
       <TextField
-        label="Batch Size"
+        label="Epochs"
         type="number"
         value={this.state.epochs}
         onChange={e => this.setState({ epochs: Number(e.target.value) })}

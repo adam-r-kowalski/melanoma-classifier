@@ -1,7 +1,8 @@
 import tensorflow as tf
+import tensorflow.contrib.eager as tfe
 import json
 
-from dataset import train_dataset
+from dataset import train_dataset, test_dataset
 from to_keras import create_model
 
 config = tf.ConfigProto()
@@ -15,8 +16,12 @@ def read_json(name):
         return json.loads(f.read())
 
 
-def dataset(batch_size):
-    return train_dataset().batch(batch_size).shuffle(100).prefetch(2)
+def dataset(batch_size, train):
+    ds = train_dataset() if train else test_dataset()
+    ds = ds.batch(batch_size)
+    if train:
+        ds = ds.shuffle(200)
+    return ds.prefetch(2)
 
 
 def loss(model, images, labels):
@@ -29,37 +34,44 @@ def grad(model, images, labels):
     return tape.gradient(loss_value, model.variables)
 
 
-def train(ws, model, optimizer, epochs, batch_size):
-    for epoch in range(epochs):
-        correct = 0
-        total = 0
+def run(ws, model_json, epoch, train=True):
+    model, optimizer = create_model(model_json, train)
+    name = model_json['name']
 
-        for iteration, (images, labels) in enumerate(dataset(batch_size)):
+    accuracy_mean = tfe.metrics.Accuracy()
+    loss_mean = tfe.metrics.Mean()
+
+    data = dataset(model_json['batchSize'], train)
+
+    for iteration, (images, labels) in enumerate(data):
+        if train:
             grads = grad(model, images, labels)
             optimizer.apply_gradients(
                 zip(grads, model.variables),
                 tf.train.get_or_create_global_step())
 
-            predictions = tf.cast(
-                tf.round(tf.sigmoid(model(images))), tf.int64)
+        predictions = tf.cast(
+            tf.round(tf.sigmoid(model(images))), tf.int64)
 
-            correct += tf.reduce_sum(
-                tf.cast(
-                    tf.equal(predictions, labels), tf.int32))
+        accuracy_mean(labels, predictions)
+        loss_mean(loss(model, images, labels))
 
-            total += images.shape[0]
-            ws.send_json({
-                'accuracy': (correct / total).numpy(),
-                'epoch': epoch,
-                'iteration': iteration
-            })
+        ws.send_json({
+            'accuracy': accuracy_mean.result().numpy(),
+            'epoch': epoch,
+            'iteration': iteration,
+            'loss': loss_mean.result().numpy(),
+            'train': train
+        })
+
+    if train:
+        model.save_weights(
+            '/models/{}/weights.h5'.format(name), overwrite=True)
 
 
 def train_model(ws, msg_json):
-    name = msg_json['model']
-    epochs = msg_json['epochs']
-    model_json = read_json(name)
-    batch_size = model_json['batchSize']
-    model, optimizer = create_model(model_json)
-    train(ws, model, optimizer, epochs, batch_size)
-    model.save_weights('/models/{}/weights.h5'.format(name), overwrite=True)
+    model_json = read_json(msg_json['model'])
+
+    for epoch in range(msg_json['epochs']):
+        run(ws, model_json, epoch)
+        run(ws, model_json, epoch, train=False)

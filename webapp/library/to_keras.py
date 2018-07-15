@@ -14,9 +14,9 @@ def load_weights(name, model):
         model.load_weights(path)
 
 
-def create_model(model_json):
+def create_model(model_json, train):
     model = tf.keras.Sequential()
     for l in model_json['layers']:
-        model.add(layer(l))
+        model.add(layer(l, train))
     load_weights(model_json['name'], model)
     return model, optimizer(model_json)

@@ -6,6 +6,8 @@ import { IEvent } from './';
 const nextModel = counter('Model');
 
 export default class CreateModelEvent implements IEvent {
+  constructor(private changeModel: boolean = false) { }
+
   public update(state: IState): IState {
     const name = nextModel();
     state.models[name] = {
@@ -15,6 +17,12 @@ export default class CreateModelEvent implements IEvent {
       learningRate: 0.01,
       optimizer: optimizers[0],
     };
+
+    if (this.changeModel) {
+      state.model = name;
+      state.drawer = false;
+    }
+
     return state;
   }
 }
