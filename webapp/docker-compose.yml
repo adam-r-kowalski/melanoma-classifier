@@ -39,15 +39,13 @@ services:
             - ./models/:/models/
             - ../data/:/data/
             - ./library/:/library/
-        stdin_open: true
-        tty: true
         working_dir: /model-runner
         networks:
             - webapp
         environment:
             - PYTHONPATH=/library/:$PYTHONPATH
         runtime: nvidia
-        command: bash
+        command: python model_runner.py
 
     model-loader:
         image: adamkowalski/python

@@ -61,6 +61,7 @@ def run(ws, model_json, epoch, train=True):
             'epoch': epoch,
             'iteration': iteration,
             'loss': loss_mean.result().numpy(),
+            'message': 'running',
             'train': train
         })
 

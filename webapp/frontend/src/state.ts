@@ -18,6 +18,40 @@ export interface INotification {
   message: string;
 }
 
+export interface IIteration {
+  accuracy: number;
+  iteration: number;
+  loss: number;
+}
+
+export interface IEpoch {
+  [epoch: number]: IIteration;
+}
+
+export interface ITraining {
+  train: IEpoch;
+  test: IEpoch;
+}
+
+export interface IStarted {
+  message: 'started';
+}
+
+export interface IRunning {
+  message: 'running';
+  accuracy: number;
+  epoch: number;
+  iteration: number;
+  loss: number;
+  train: boolean;
+}
+
+export interface IFinished {
+  message: 'finished';
+}
+
+export type Message = IStarted | IRunning | IFinished;
+
 export interface IState {
   drawer: boolean;
   notifications: INotification[];
@@ -29,6 +63,7 @@ export interface IState {
   models: { [name: string]: IModel };
   tab: number;
   theme: Theme;
+  training: ITraining;
 }
 
 export const empty: IState = {
@@ -46,4 +81,8 @@ export const empty: IState = {
       primary: blue,
     },
   }),
+  training: {
+    test: {},
+    train: {},
+  },
 };

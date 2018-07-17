@@ -19,9 +19,9 @@ async def root(request):
         msg_json = json.loads(msg.data)
         print(msg_json)
 
-        ws.send_json({'training': 'started'})
-
+        ws.send_json({'message': 'started'})
         train_model(ws, msg_json)
+        ws.send_json({'message': 'finished'})
 
     print('ws connection closed')
     return ws
