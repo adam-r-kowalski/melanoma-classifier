@@ -1,9 +1,15 @@
 import tensorflow as tf
 import os
+import json
 
 from layer import layer
 from optimizer import optimizer
 from dataset import train_dataset
+
+
+def read_json(name):
+    with open('/models/{}/model.json'.format(name)) as f:
+        return json.loads(f.read())
 
 
 def load_weights(name, model):

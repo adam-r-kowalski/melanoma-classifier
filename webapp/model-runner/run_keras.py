@@ -3,17 +3,12 @@ import tensorflow.contrib.eager as tfe
 import json
 
 from dataset import train_dataset, test_dataset
-from to_keras import create_model
+from to_keras import create_model, read_json
 
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
 
 tf.enable_eager_execution(config)
-
-
-def read_json(name):
-    with open('/models/{}/model.json'.format(name)) as f:
-        return json.loads(f.read())
 
 
 def dataset(batch_size, train):

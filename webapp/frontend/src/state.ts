@@ -52,15 +52,22 @@ export interface IFinished {
 
 export type Message = IStarted | IRunning | IFinished;
 
+export interface IPrediction {
+  image: string;
+  prediction: number;
+  label: number;
+}
+
 export interface IState {
   drawer: boolean;
-  notifications: INotification[];
   model: string;
   modelRunner: {
     ready: boolean
     socket: SocketIOClient.Socket,
   };
   models: { [name: string]: IModel };
+  notifications: INotification[];
+  predictions: IPrediction[];
   tab: number;
   theme: Theme;
   training: ITraining;
@@ -75,7 +82,8 @@ export const empty: IState = {
   },
   models: {},
   notifications: [],
-  tab: 1,
+  predictions: [],
+  tab: 0,
   theme: createMuiTheme({
     palette: {
       primary: blue,

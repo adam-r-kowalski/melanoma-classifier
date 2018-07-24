@@ -9,6 +9,10 @@
 (menu-bar-mode -1)
 (tooltip-mode -1)
 
+(when (display-graphic-p)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1))
+
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 (setq inhibit-startup-screen t)
@@ -36,12 +40,23 @@
 
 (use-package diminish :defer t)
 
+(use-package undo-tree
+  :defer t
+  :diminish undo-tree-mode)
+
 (use-package linum-relative
   :defer t
   :init
   (linum-relative-global-mode)
   (setq linum-relative-current-symbol "")
   :diminish linum-relative-mode)
+
+(use-package exec-path-from-shell
+  :defer t
+  :init
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize)))
+
 
 (use-package zerodark-theme
   :defer t
@@ -58,9 +73,7 @@
   :diminish ivy-mode)
 
 (use-package counsel :defer t)
-
-(use-package counsel-projectile
-  :defer t)
+(use-package counsel-projectile :defer t)
 
 (use-package which-key
   :defer t
@@ -73,6 +86,7 @@
  :states 'normal
  :keymaps '(global dired-mode-map)
  :prefix "SPC"
+ "g" 'magit
  "f" 'counsel-find-file
  "F" 'counsel-projectile
  "r" 'counsel-recentf
@@ -129,6 +143,13 @@
   :init (global-flycheck-mode)
   :diminish flycheck-mode)
 
+(use-package flyspell
+  :defer t
+  :init
+  (add-hook 'text-mode-hook (lambda () (flyspell-mode 1)))
+  (add-hook 'prog-mode-hook (lambda () (flyspell-prog-mode)))
+  :diminish flyspell-mode)
+
 (use-package rainbow-delimiters
   :defer t
   :init
@@ -158,15 +179,25 @@
   (add-hook 'prog-mode-hook #'smartparens-mode)
   (add-hook 'smartparens-mode-hook
 	    #'(lambda ()
-		(sp-local-pair 'emacs-lisp-mode "`" nil :actions nil)
-		(sp-local-pair 'emacs-lisp-mode "'" nil :actions nil)))
+		(sp-pair "'" nil :actions :rem)
+		(sp-pair "`" nil :actions :rem)))
   :diminish smartparens-mode)
 
 (use-package evil-smartparens
   :defer t
   :init
-  (add-hook 'emacs-lisp-mode-hook #'evil-smartparens-mode)
+  (add-hook 'smartparens-mode-hook #'evil-smartparens-mode)
   :diminish evil-smartparens-mode)
+
+(use-package magit :defer t
+  :init
+  (add-hook 'magit #'evil-magit-init)
+  (add-hook 'magit #'evil-mode)
+  (add-hook 'magit #'turn-on-evil-mode))
+
+(use-package evil-magit :defer t
+  :init (setq evil-magit-state 'normal))
+
 
 (general-define-key
  :states '(normal insert)
@@ -174,52 +205,88 @@
  "TAB" 'lisp-indent-adjust-parens
  "<backtab>" 'lisp-dedent-adjust-parens)
 
+
 (use-package elpy
   :defer t
-  :init (elpy-enable))
+  :init
+  (elpy-enable)
+  (setq python-shell-interpreter "jupyter"
+	python-shell-interpreter-args "console --simple-prompt"
+	python-shell-prompt-detect-failure-warning nil)
+  (add-to-list 'python-shell-completion-native-disabled-interpreters
+	       "jupyter")
+  :hook (before-save . elpy-yapf-fix-code))
+
+(use-package tide
+  :defer t
+  :after (typescript-mode company flycheck)
+  :hook ((typescript-mode . tide-setup)
+	 (typescript-mode . tide-hl-identifier-mode)
+	 (before-save . tide-format-before-save)))
+
 
 (general-define-key
  :states '(normal visual)
  :keymaps 'python-mode-map
  :prefix ","
- "e" 'elpy-shell-send-group)
+ "a" 'elpy-goto-assignment
+ "A" 'elpy-goto-assignment-other-window
+ "d" 'elpy-goto-definition
+ "D" 'elpy-goto-definition-other-window
+ "s" 'elpy-shell-switch-to-shell
+ "S" 'elpy-shell-switch-to-shell-in-current-window
+ "k" 'elpy-shell-kill
+ "K" 'elpy-shell-kill-all
+ "e" 'elpy-shell-send-statement
+ "E" 'elpy-shell-send-statement-and-step
+ "g" 'elpy-shell-send-group
+ "G" 'elpy-shell-send-group-and-step
+ "v" 'elpy-shell-send-region-or-buffer
+ "V" 'elpy-shell-send-region-or-buffer-and-step
+ "t" 'elpy-shell-send-top-statement
+ "T" 'elpy-shell-send-top-statement-and-step
+ "f" 'elpy-shell-send-defun
+ "F" 'elpy-shell-send-defun-and-step
+ "b" 'elpy-shell-send-buffer
+ "B" 'elpy-shell-send-buffer-and-step
+ "c" 'elpy-shell-send-defclass
+ "C" 'elpy-shell-send-defclass-and-step
+ "n" 'elpy-flymake-next-error
+ "N" 'elpy-flymake-previous-error
+ "h" 'elpy-doc
+ "u" 'elpy-test
+ "r" '(nil :which-key "refactor")
+ "p" 'elpy-profile-buffer-or-region)
+
+(general-define-key
+ :states '(normal visual)
+ :keymaps 'python-mode-map
+ :prefix ",r"
+ "s" 'elpy-multiedit-python-symbol-at-point
+ "f" 'elpy-format-code
+ "r" 'elpy-refactor)
+
 
 (use-package tide
   :defer t
+  :after (typescript-mode company flycheck)
   :hook ((typescript-mode . tide-setup)
 	 (typescript-mode . tide-hl-identifier-mode)
 	 (before-save . tide-format-before-save)))
 
+
+(defun typescript-web-mode-hook ()
+  "Hook to run during web mode to enable typescript."
+  (when (string-equal "tsx" (file-name-extension buffer-file-name))
+    (tide-setup)))
+
+
 (use-package web-mode
   :defer t
   :init
-  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
-  (add-hook 'web-mode-hook
-	    (lambda ()
-	      (when (string-equal "tsx" (file-name-extension buffer-file-name))
-		(tide-mode))))
-  (flycheck-add-mode 'typescript-tslint 'web-mode)
-  (setq web-mode-code-indent-offset 2
-	typescript-indent-level 2))
-
-
-;; If you edit it by hand, you could mess it up, so be careful.
-;; Your init file should contain only one such instance.
-;; If there is more than one, they won't work right.
-'(package-selected-packages
-  (quote
-   (elpy aggressive-indent adjust-parens evil-cleverparens rainbow-delimiters company general which-key counsel-projectile counsel ivy zerodark-theme linum-relative diminish evil use-package)))
-
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-
-(provide 'init)
-;;; init.el ends here
+  (add-hook 'web-mode-hook #'typescript-web-mode-hook)
+  (flycheck-add-mode 'typescript-tslint 'web-mode))
 
 
 (custom-set-variables
@@ -229,4 +296,13 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (web-mode zerodark-theme which-key use-package tide rainbow-delimiters linum-relative general evil-smartparens evil-cleverparens elpy diminish counsel-projectile aggressive-indent adjust-parens))))
+    (tide elpy evil-magit evil-smartparens aggressive-indent adjust-parens evil-cleverparens rainbow-delimiters company general which-key counsel-projectile counsel ivy zerodark-theme exec-path-from-shell linum-relative diminish evil use-package))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+(provide 'init)
+;;; init.el ends here

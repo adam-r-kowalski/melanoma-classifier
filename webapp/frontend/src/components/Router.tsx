@@ -4,14 +4,12 @@ import { context } from '../context';
 import LayersRoute from './LayersRoute';
 import SettingsRoute from './SettingsRoute';
 import TrainingRoute from './TrainingRoute';
-
-const PredictionRoute = (): JSX.Element =>
-  <div>Not implemented yet</div>;
+import PredictionsRoute from './PredictionsRoute';
 
 const routes: { [tab: number]: JSX.Element } = {
   0: <LayersRoute />,
   1: <TrainingRoute />,
-  2: <PredictionRoute />,
+  2: <PredictionsRoute />,
   3: <SettingsRoute />,
 };
 

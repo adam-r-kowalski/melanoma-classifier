@@ -12,7 +12,7 @@ services:
             - "8888:8888"
         networks:
             - webapp
-        command: bash
+        command: yarn start
 
     model-saver:
         image: adamkowalski/python
@@ -82,6 +82,22 @@ services:
             - webapp
         runtime: nvidia
         command: python model_renamer.py
+
+    model-predictor:
+        image: adamkowalski/python
+        volumes:
+            - ./model-predictor/:/model-predictor/
+            - ../.emacs.d/:/root/.emacs.d/
+            - ./models/:/models/
+            - ../data/:/data/
+            - ./library/:/library/
+        working_dir: /model-predictor
+        networks:
+            - webapp
+        environment:
+            - PYTHONPATH=/library/:$PYTHONPATH
+        runtime: nvidia
+        command: python model_predictor.py
 
 networks:
     webapp:

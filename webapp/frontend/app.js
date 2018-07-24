@@ -34,6 +34,11 @@ app.use(proxy('/model-loader', {
     target: 'http://model-loader:8080/'
 }));
 
+app.use(proxy('/model-predictor', {
+    pathRewrite: { '^/model-predictor': '' },
+    target: 'http://model-predictor:8080/'
+}));
+
 const server = app.listen(
     8888,
     () => console.log('listening on *:8888'));
