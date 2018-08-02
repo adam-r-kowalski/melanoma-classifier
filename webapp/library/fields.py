@@ -1,3 +1,7 @@
+# Copyright (c) 2018 Adam Kowalski
+# This code is available under the "Apache License 2.0"
+# Please see the file COPYING in this distribution for license terms.
+
 def field(layer_json, name):
     return [f for f in layer_json['fields'] if f['name'] == name][0]
 
