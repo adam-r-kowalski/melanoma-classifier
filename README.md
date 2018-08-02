@@ -4,6 +4,10 @@
 
 Adam Kowalski
 
+## Copyright
+
+Copyright &copy; 2018 Adam Kowalski
+
 ## Contact Me
 
 adam.kowalski.work@gmail.com
@@ -71,3 +75,7 @@ an even distribution of melanoma to non melanoma images
 This service will allow you to construct and train models
 
 `docker-compose -f webapp/docker-compose.yml up`
+
+## License
+
+This code is available under the "Apache License 2.0". Please see the COPYING in this distribution for license terms.
