@@ -1,11 +1,13 @@
+# Copyright (c) 2018 Adam Kowalski
+# This code is available under the "Apache License 2.0"
+# Please see the file COPYING in this distribution for license terms.
+
 import tensorflow as tf
 import json
 import os
 from skimage.io import imread
 
-
 tf.enable_eager_execution()
-
 
 json_files = tf.gfile.Glob('/data/ISIC-images/**/*.json')
 
@@ -52,10 +54,11 @@ def int_feature(value):
 def example_from_file(image_file, label):
     image = resize_and_encode_image(imread(image_file))
 
-    return tf.train.Example(features=tf.train.Features(feature={
-        'image': bytes_feature(image),
-        'label': int_feature(label)
-    }))
+    return tf.train.Example(
+        features=tf.train.Features(feature={
+            'image': bytes_feature(image),
+            'label': int_feature(label)
+        }))
 
 
 def write(files, record, label):
