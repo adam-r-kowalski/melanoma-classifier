@@ -1,3 +1,7 @@
+// Copyright (c) 2018 Adam Kowalski
+// This code is available under the "Apache License 2.0"
+// Please see the file COPYING in this distribution for license terms.
+
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');

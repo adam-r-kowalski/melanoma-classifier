@@ -1,3 +1,7 @@
+// Copyright (c) 2018 Adam Kowalski
+// This code is available under the "Apache License 2.0"
+// Please see the file COPYING in this distribution for license terms.
+
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import Close from '@material-ui/icons/Close';
